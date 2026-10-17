@@ -1,0 +1,101 @@
+    .-------.
+   /  | | |  \
+  |---|-+-|---|
+   \  | | /==\
+    `-----|  |
+           \==\_
+               \
+OSINTCLI / 1.0.0
+by R_HMT  |  Local-first OSINT
+----------------------------------------
+PUBLIC SOURCES / LOCAL EVIDENCE
+[01] Auto Investigation
+[02] Username Intelligence
+[03] Domain / Website
+[04] IP / Network
+[05] Email Intelligence
+[06] Metadata Forensics
+[07] Evidence & History
+[08] AI Narration (optional)
+[09] Generate Report
+[10] Settings / Modules
+[00] Exit
+Pilih nomor
+> 7
+1a6984a52760 / DONE
+example.com (OFFLINE FIXTURE)
+Case ID (Enter: terbaru / 0: kembali)
+> 
+1 evidence / 2 resume / 3 hapus / 0
+kembali
+> 1
+----------------------------------------
+001 / VERIFIED
+Fixture observasi | demo
+fixture-1.example.com
+Sumber: https://example.com/evidence/1
+2026-10-17T00:02:27+00:00
+Alasan: Data sintetis untuk pengujian;
+bukan hasil pencarian nyata.
+----------------------------------------
+002 / VERIFIED
+Fixture observasi | demo
+fixture-2.example.com
+Sumber: https://example.com/evidence/2
+2026-10-17T00:02:27+00:00
+Alasan: Data sintetis untuk pengujian;
+bukan hasil pencarian nyata.
+----------------------------------------
+003 / CANDIDATE
+Fixture observasi | demo
+fixture-0.example.com
+Sumber: https://example.com/evidence/0
+2026-10-17T00:02:27+00:00
+Alasan: Data sintetis untuk pengujian;
+bukan hasil pencarian nyata.
+----------------------------------------
+PUBLIC SOURCES / LOCAL EVIDENCE
+[01] Auto Investigation
+[02] Username Intelligence
+[03] Domain / Website
+[04] IP / Network
+[05] Email Intelligence
+[06] Metadata Forensics
+[07] Evidence & History
+[08] AI Narration (optional)
+[09] Generate Report
+[10] Settings / Modules
+[00] Exit
+Pilih nomor
+> 9
+1a6984a52760 / DONE
+example.com (OFFLINE FIXTURE)
+Case ID (Enter: terbaru / 0: kembali)
+> 
+Format: pdf,json,csv,html,png [semua] /
+0 kembali
+> pdf,json
+PDF ringkasan (maks 15 evidence)? [y/N]
+> n
+Folder output (Enter: lokal / android /
+0 kembali)
+> /tmp/osintcli-record-8uqn3dpl/out
+Tersimpan: /tmp/osintcli-record-
+8uqn3dpl/out/osintcli-1a6984a52760.pdf
+Tersimpan: /tmp/osintcli-record-
+8uqn3dpl/out/osintcli-1a6984a52760.json
+----------------------------------------
+PUBLIC SOURCES / LOCAL EVIDENCE
+[01] Auto Investigation
+[02] Username Intelligence
+[03] Domain / Website
+[04] IP / Network
+[05] Email Intelligence
+[06] Metadata Forensics
+[07] Evidence & History
+[08] AI Narration (optional)
+[09] Generate Report
+[10] Settings / Modules
+[00] Exit
+Pilih nomor
+> 0

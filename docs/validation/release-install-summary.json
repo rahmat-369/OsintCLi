@@ -1,0 +1,16 @@
+{
+  "platform": "Linux x86_64",
+  "python": "3.12.14",
+  "fresh_venv": true,
+  "full_installer_exit": 0,
+  "invoked_outside_source_tree": true,
+  "demo_records": 3,
+  "report_formats": [
+    "pdf",
+    "json",
+    "csv",
+    "html",
+    "png"
+  ],
+  "pip_check": "No broken requirements found."
+}

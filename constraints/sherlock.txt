@@ -1,0 +1,21 @@
+# Observed Linux Python 3.12 resolver constraints, 2026-10-17.
+# Native wheels may be unavailable on Termux; optional tool installation may fail.
+PySocks==1.7.1
+certifi==2026.7.22
+charset-normalizer==3.5.2
+colorama==0.4.6
+et_xmlfile==2.0.0
+idna==3.20
+numpy==2.5.4
+openpyxl==3.1.5
+pandas==2.3.3
+python-dateutil==2.9.0.post0
+pytz==2026.5
+requests==2.34.2
+requests-futures==1.1.0
+sherlock-project==0.16.2
+six==1.17.0
+stem==1.8.2
+tomli==2.5.0
+tzdata==2026.5
+urllib3==2.8.0

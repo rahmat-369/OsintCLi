@@ -1,0 +1,26 @@
+[
+  {
+    "source": "nexray",
+    "http": "200",
+    "exit": 0,
+    "body_type": "non-JSON"
+  },
+  {
+    "source": "dns",
+    "http": "200",
+    "exit": 0,
+    "json_type": "dict"
+  },
+  {
+    "source": "rdap",
+    "http": "200",
+    "exit": 0,
+    "json_type": "dict"
+  },
+  {
+    "source": "ct",
+    "http": "200",
+    "exit": 0,
+    "json_type": "list"
+  }
+]

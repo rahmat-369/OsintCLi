@@ -1,0 +1,90 @@
+[
+  {
+    "module": "sherlock",
+    "case": "ea29b48d72b4",
+    "state": "DONE",
+    "evidence": 2,
+    "jobs": [
+      {
+        "id": "92e457e38915490c9f738361ba2cff07",
+        "case_id": "ea29b48d72b4",
+        "adapter": "sherlock",
+        "state": "DONE",
+        "started_at": "2026-10-16T23:56:45+00:00",
+        "ended_at": "2026-10-16T23:57:05+00:00",
+        "error_code": null,
+        "message": null,
+        "version": "external / version unverified"
+      }
+    ],
+    "statuses": [
+      "CANDIDATE",
+      "CANDIDATE"
+    ]
+  },
+  {
+    "module": "maigret",
+    "case": "7af85fc808f0",
+    "state": "PARTIAL",
+    "evidence": 4,
+    "jobs": [
+      {
+        "id": "b302bf1e14ce499a9fe21c7b61082b7b",
+        "case_id": "7af85fc808f0",
+        "adapter": "maigret",
+        "state": "PARTIAL",
+        "started_at": "2026-10-16T23:56:45+00:00",
+        "ended_at": "2026-10-16T23:56:55+00:00",
+        "error_code": null,
+        "message": null,
+        "version": "external / version unverified"
+      }
+    ],
+    "statuses": [
+      "CANDIDATE",
+      "CANDIDATE",
+      "UNVERIFIED",
+      "FAILED_SOURCE"
+    ]
+  },
+  {
+    "module": "exiftool",
+    "case": "1d119225549b",
+    "state": "DONE",
+    "evidence": 19,
+    "jobs": [
+      {
+        "id": "130ef3a244fc4de6b6e54a7cf977fecb",
+        "case_id": "1d119225549b",
+        "adapter": "exiftool",
+        "state": "DONE",
+        "started_at": "2026-10-16T23:56:45+00:00",
+        "ended_at": "2026-10-16T23:56:45+00:00",
+        "error_code": null,
+        "message": null,
+        "version": "external / version unverified"
+      }
+    ],
+    "statuses": [
+      "VERIFIED",
+      "VERIFIED",
+      "VERIFIED",
+      "VERIFIED",
+      "VERIFIED",
+      "VERIFIED",
+      "VERIFIED",
+      "VERIFIED",
+      "VERIFIED",
+      "VERIFIED",
+      "VERIFIED",
+      "VERIFIED",
+      "VERIFIED",
+      "VERIFIED",
+      "VERIFIED",
+      "VERIFIED",
+      "VERIFIED",
+      "VERIFIED",
+      "VERIFIED"
+    ]
+  }
+]

@@ -1,0 +1,30 @@
+[
+  {
+    "repo": "sherlock-project/sherlock",
+    "commit": "e40a45ec2a074b90703b3b4b842c8a3adbd6ada3"
+  },
+  {
+    "repo": "soxoj/maigret",
+    "commit": "eaf820666d15bfd545129f3223e2261c27191e74"
+  },
+  {
+    "repo": "lanmaster53/recon-ng",
+    "commit": "32b08fe7b6993ca1f2d8f76ba8f5d23c7f34a11d"
+  },
+  {
+    "repo": "smicallef/spiderfoot",
+    "commit": "0f815a203afebf05c98b605dba5cf0475a0ee5fd"
+  },
+  {
+    "repo": "laramies/theHarvester",
+    "commit": "49a38f8d33c32336bbf6a111ea723ea223116265"
+  },
+  {
+    "repo": "exiftool/exiftool",
+    "commit": "2200871d9cef988051d2a99d67df3bda6cbb30a8"
+  },
+  {
+    "repo": "blacklanternsecurity/bbot",
+    "commit": "a6fb827bb144cdb85b52e142a4d6e14ed5f94b69"
+  }
+]

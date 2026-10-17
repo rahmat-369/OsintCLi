@@ -1,0 +1,671 @@
+ OSINTCLI
+ PRODUCT REQUIREMENTS DOCUMENT · V1.0
+
+
+ Modular OSINT Toolkit for Termux & Linux
+
+ Termux-first · Numbered terminal menu · Colored icon ANSI art · Automated public-source intelligence ·
+ Optional Nexray endpoint · Verified PDF reporting
+
+
+
+
+  DOCUMENT CONTROL                     VALUE
+
+
+  Document                             Full PRD + Visual Reference + Agent Execution & QA Contract
+
+
+  Project identity                     OSINTCLI — by R_HMT
+
+
+  Primary environment                  Android / Termux; Linux VPS for development and testing
+
+
+  AI provider                          Configurable HTTP endpoint; initial preset: Nexray Claude
+
+
+  Distribution                         Open-source GitHub repository with attribution and license audit
+
+
+  Status                               Specification only. No implementation or Termux test has been completed.
+
+
+ The cover uses the previously generated OSINTCLI banner as a visual reference. The terminal runtime must display only a small,
+ mobile-width icon converted to ANSI art, not this full banner.
+
+
+
+
+OSINTCLI / PRODUCT REQUIREMENTS DOCUMENT / R_HMT                                                                                  1
+ 01 / Executive decisions
+ OSINTCLI modernizes existing open-source OSINT capabilities into one usable, local-first terminal framework.
+ The differentiator is not a collection of shortcuts; it is a unified investigation pipeline with verifiable
+ provenance, deduplicated evidence, resilient jobs, optional AI narration, and production-quality reports.
+
+  • V1 is a real terminal application, not a web dashboard. Users type a menu number and press Enter.
+  • Android Termux is the acceptance platform; Linux VPS is the development environment, not a mandatory
+    hosted service.
+  • Investigative collection uses lawful public information and authorized targets. No authentication bypass,
+    private-account access, credential testing, or intrusive scanning by default.
+  • Clone and study upstream repositories; integrate selectively by adapter or legal reuse. Never imply that all
+    repositories have identical licenses or Termux support.
+  • SQLite requires no account or server setup. Installer/bootstrap creates its data directories and schema
+    automatically.
+  • AI does not perform OSINT collection, calculate statistics, infer identities without evidence, or compose
+    charts. It rewrites and summarizes supplied evidence only.
+  • Reports remain available when the AI endpoint is offline; failure must not prevent PDF generation.
+
+
+ 02 / User experience & key flows
+ Primary user journeys
+
+  Journey                  Acceptance behavior
+
+
+  First run                Clone → install → launch; bootstrap database; show compact icon, project name and numbered menu.
+
+
+  Quick recon              Select module → input target → preview scope → run → inspect status, source and evidence → save.
+
+
+  Auto investigation       Input permitted target → detect kind → suggest passive adapters → run selected scope with progress,
+                           retries and stop control.
+
+
+  AI edit                  Select case → preview sanitized evidence → custom instructions → request endpoint → review/correct
+                           summary.
+
+
+  Reporting                Select case → generate reproducible tables/graphs → optional reviewed AI prose → PDF → local Termux
+                           storage / Android Downloads when permitted.
+
+
+  Recovery                 Interrupt app → restart → see prior cases; partial jobs remain tagged, no false successful completion.
+
+
+
+
+ Terminal menu contract
+ [01] Auto Investigation
+ [02] Username Intelligence
+ [03] Domain / Website Intelligence
+ [04] IP / Network Intelligence
+ [05] Email Intelligence
+ [06] Metadata Forensics
+ [07] Evidence & History
+ [08] AI Narration (optional)
+ [09] Generate Report
+ [10] Settings / Modules
+ [00] Exit
+ Every screen offers clear Back / Cancel navigation. Display the actual progress stage and totals, not
+ fabricated counts. On narrow screens, show vertical summary cards or paginated tables, never a wide matrix
+ requiring horizontal scrolling.
+
+
+
+OSINTCLI / PRODUCT REQUIREMENTS DOCUMENT / R_HMT                                                                                    2
+ 03 / Feature scope and priorities
+  Priority    Module                      Required implementation
+
+
+  P0          Core / Jobs / SQLite        Case lifecycle, target normalization, persistent jobs, source/time records, errors,
+                                          safe cancellation.
+
+
+  P0          Domain / DNS                Passive DNS and RDAP lookups, MX/NS/TXT, certificate transparency where
+                                          allowed; distinguish source unavailability.
+
+
+  P0          Username                    Public username checks; return candidate profile URLs and uncertainty, do not
+                                          equate matching names with same person.
+
+
+  P0          Metadata                    Local EXIF/document metadata parsing; process user-selected files only; warn
+                                          about sensitive metadata.
+
+
+  P0          PDF without AI              Real tables, counts and graphics from deterministic database queries, provenance
+                                          citations, font/render verification.
+
+
+  P1          IP / ASN / Web              Passive RDAP/ASN, HTTP headers, public sitemap/robots, TLS; explicitly
+                                          approximate geo results.
+
+
+  P1          Email                       Syntax/domain/MX/SPF/DMARC + genuinely public citations; no account probing.
+
+
+  P1          Auto investigation          Rule-based target routing with concurrency caps, timeouts, rate limiting and
+                                          depth controls.
+
+
+  P1          AI narration                Configurable Nexray endpoint + custom instruction templates + sanitized
+                                          evidence review.
+
+
+  P2          Advanced correlation        Provenance-preserving entity links and verified relationships; no automated
+                                          private-person attribution.
+
+
+
+
+OSINTCLI / PRODUCT REQUIREMENTS DOCUMENT / R_HMT                                                                                3
+ 04 / Repository ATM strategy
+ Agent must clone repositories into a temporary audit workspace, pin commit IDs, inspect LICENSE, security
+ advisories, Python requirements, CLI exports, output schemas and mobile support. The released product may
+ install wrappers or call published dependencies without vendoring entire projects.
+
+  Upstream / URL                     What to learn / reuse                         Integration decision
+
+
+  Sherlock — github.com/sherlock-p   Username query adapters, response             High; selected adapter after license +
+  roject/sherlock                    classification and rate limits                Termux test
+
+
+  Maigret —                          Profile normalization and result reports      High; avoid redundant network work with
+  github.com/soxoj/maigret                                                         Sherlock
+
+
+  Recon-ng —                         Workspace, plugin/module lifecycle; GPL-3.0   Architecture reference; legal assessment
+  github.com/lanmaster53/recon-ng    repository                                    before code copying
+
+
+  SpiderFoot —                       Event correlation, provider sources,          Architecture reference; full installation not
+  github.com/smicallef/spiderfoot    automation                                    mandatory
+
+
+  theHarvester —                     Passive domain/email public-source            Selective adapter; check Python
+  github.com/laramies/theHarvester   discovery                                     compatibility
+
+
+  ExifTool —                         Mature metadata extractor                     External command adapter when installed
+  github.com/exiftool/exiftool
+
+
+  Optional: BBOT — github.com/bla    Event-driven extensibility patterns           Design study; review AGPL obligations
+  cklanternsecurity/bbot                                                           before reuse
+
+
+
+
+ Mandatory source compliance
+  • Keep a THIRD_PARTY_NOTICES.md with upstream URLs, commit/tag, license, files copied, modifications
+    and credit.
+  • Do not remove upstream copyright headers. GPL/AGPL source incorporation may affect downstream
+    release obligations; choose or review project license with care.
+  • Never merge upstream code blindly. Use adapters/process boundaries where maintenance and licensing
+    make that sensible.
+  • Avoid supply-chain risks: lock dependencies, pin tags/hashes when feasible, scan vulnerabilities, and
+    prohibit download-and-execute from untrusted sources.
+
+
+ 05 / Architecture and contracts
+ Terminal UI -> Case Controller -> Job Manager
+     -> Adapter Registry -> Public Data Sources
+     -> Evidence Normalizer -> SQLite
+     -> Deterministic Report Builder -> PDF
+     -> Optional AI Narrative Adapter -> Reviewed prose
+
+
+ Suggested repository tree
+ osintcli/
+   osintcli/{cli,core,adapters,evidence,ai,reports,db}/
+   assets/{banner-readme.png,icon-source.png,icon-mobile.ans}/
+   scripts/{install-termux.sh,install-linux.sh,make-ansi.py}/
+   tests/{unit,integration,termux,visual,fixtures}/
+   docs/{PRD.md,THIRD_PARTY_NOTICES.md,REPORT-SPEC.md}/
+   README.md pyproject.toml LICENSE CHANGELOG.md
+
+
+
+
+OSINTCLI / PRODUCT REQUIREMENTS DOCUMENT / R_HMT                                                                                   4
+ Normalized evidence schema
+ Each piece of evidence must contain: id, case_id, entity_type, normalized_value, title, raw_value or file
+ reference, source_url/source_name, adapter_id, collected_at (UTC), scope_id, status, verification_reason,
+ confidence_basis, digest/hash, and error_code. Store raw and normalized evidence separately; preserve
+ provenance.
+
+ Evidence status: VERIFIED, CANDIDATE, UNVERIFIED, FAILED_SOURCE, STALE. Do not call an HTTP 200
+ response or matching username a verified identity. Confidence must be rule-derived and explained, not
+ guessed by the LLM.
+
+ SQLite and file storage
+ ~/.local/share/osintcli/osintcli.db       [Termux/Linux app data]
+ ~/.local/share/osintcli/cases/<case-id>/
+ ~/.local/share/osintcli/reports/<case-id>.pdf
+ ~/.config/osintcli/config.toml           [nonsecret config]
+ ~/.config/osintcli/secrets.toml          [mode 0600 if any]
+ Create SQLite schema and apply versioned migrations on first launch/update. Enable foreign keys and WAL
+ only where suitable, run backups before migrations, and do not store unencrypted credentials inside evidence
+ or exports.
+
+
+ 06 / Mobile CLI design specification
+ Primary viewport: 40 terminal columns (also test 32, 60, 80 and 120). Detect terminal size, ANSI color
+ capability and Unicode support. Use narrow panels; automatic wrapping; short labels; menu numbers + Enter;
+ non-interactive fallback. No browser and no physical keyboard required.
+
+  Screen                     Required behavior
+
+
+  Splash                     Small, recognizable icon ANSI art only; then OSINTCLI/version/by R_HMT and system status.
+
+
+  Module menu                Single-column numbered menu; fit 40 columns; scroll/paginate where needed.
+
+
+  Scan screen                Target, scope, source-stage, elapsed time, success/errors, cancel hint; honest statuses.
+
+
+  Evidence list              Source+time+verification badge in compact multiline rows; inspect individual evidence.
+
+
+  AI settings                Endpoint, HTTP method, optional headers, URL parameter, parser path, timeouts, editable custom
+                             instructions.
+
+
+  Reports                    Choose summary/full, include AI yes/no, export directory, preview and error diagnostics.
+
+
+
+
+ ASCII / ANSI icon production pipeline
+  • 1. Design an original small symbol from the approved README art direction: globe + inspection lens / hood
+    silhouette, but a simple icon works better at 24-30 cells.
+  • 2. Maintain a true editable image asset (e.g. SVG/PNG), plus icon-source.png and a readable monochrome
+    fallback.
+  • 3. Agent must write or include a reproducible conversion script (Pillow pixel-to-block / ANSI palette
+    mapping, aspect ratio correction).
+  • 4. Generate 24-, 28- and 32-column previews; inspect on real Termux screenshot with both light/dark
+    terminals.
+  • 5. Do not simply ASCII-convert the entire wide README banner: crop/redraw icon, reduce visual detail,
+    keep only essential shape.
+
+
+
+
+OSINTCLI / PRODUCT REQUIREMENTS DOCUMENT / R_HMT                                                                              5
+  • 6. Avoid true-color assumptions: support 24-bit ANSI, 256-color and plain fallback. UTF-8 block characters
+    may vary in Android fonts.
+
+ Visual requirements / anti AI-slop
+ Dark near-black base (#09121B), muted electric cyan (#00C6D7) and sparse signal green (#35D18A). Clean
+ vertical rhythm and restrained spacing. No fake hacker code, random digits, excessive neon, pseudo-SciFi
+ panels, emojis or decorative badges. Animation is optional, <=1.5 s and skippable; no typing-effect delay at
+ every launch.
+
+
+ 07 / Visual image-generation references
+ README and social presentation need authentic visual assets, not terminal screenshots pretending to be
+ functional software. The approved widescreen banner included on this PDF cover is an art-direction reference.
+ Brand assets must be original, attributable, and source files preserved.
+
+ Prompt A — README hero banner (image generator)
+ Create a premium GitHub README hero banner for an open-source project named “OSINTCLI”. Format 3.0:1
+ wide. Visual center: a unique, minimal emblem combining a globe meridian and magnifying glass, with a
+ subtle anonymous hood motif as optional supporting silhouette. Dark charcoal cyber-investigation aesthetic;
+ highly disciplined cyan and signal-green accents; precise technical grid and very restrained source-node lines.
+ Include elegant readable OSINTCLI wordmark, subtitle “MODULAR OPEN-SOURCE INTELLIGENCE TOOLKIT”,
+ and small “by R_HMT”. No cinematic movie poster, no busy background, no illegible fake code, no neon
+ overload, no fake UI metrics. Leave generous safe margins for mobile GitHub cropping.
+
+ Prompt B — icon master (must work as terminal art)
+ Design one highly distinctive flat cyber-intelligence emblem for OSINTCLI, square 1:1, centered on a solid
+ dark background. Abstract world globe with one magnifying lens integrated into the contour, geometric
+ low-detail silhouette, strong negative space, 2-3 flat cyan/green tonal regions, no gradients, no words, no
+ extra objects. Should be recognizable when reduced to 24 monospace character cells and converted to
+ colored ANSI block art. Provide crisp contours and balanced symmetry, not photographic complexity.
+
+ Prompt C — real CLI preview capture
+ Do not image-generate a fake screenshot. Build the actual terminal app, run a safe fixture-driven demo,
+ record a real 40-column Termux session showing icon, numbered menu, progress, evidence status and report
+ creation. Remove secrets, genuine personal identifiers and misleading scan metrics. Convert the recording to
+ GIF/WebP only after verification.
+
+ Image delivery rules
+  • assets/banner-readme.png: optimized width approximately 1600-2000 px, readable on mobile.
+  • assets/icon-source.png or SVG: editable original emblem; ANSI conversion script tracked in git.
+  • assets/icon-mobile.ans: generated RGB/ANSI text; plain fallback icon-mobile.txt.
+  • docs/screenshots/: real app captures, labelled fixture/demo where synthetic.
+  • Do not present a generated cinematic banner as an accurate screenshot of the CLI.
+
+
+
+
+OSINTCLI / PRODUCT REQUIREMENTS DOCUMENT / R_HMT                                                                   6
+ 08 / Nexray AI endpoint: replace Gemini
+ Preset endpoint: https://api.nexray.eu.cc/ai/claude with GET query parameter text. Example supplied by
+ project owner:
+
+ curl -X GET "https://api.nexray.eu.cc/ai/claude?text=Hai"
+ Observed in a public web retrieval on 17 Oct 2026: JSON containing status=true and result="Hai! How can I
+ assist you today?". This demonstrates a basic response only. A second direct network test from the document
+ runtime was blocked by DNS resolution; it cannot certify long-context, availability, security or report quality.
+
+ Provider-neutral adapter / configuration
+ provider = "nexray_http"
+ endpoint = "https://api.nexray.eu.cc/ai/claude"
+ method = "GET"
+ input_parameter = "text"
+ response_text_path = "result"
+ success_path = "status"
+ timeout_seconds = 25
+ max_url_length = 1800   # safety cap; tune after testing
+ The adapter must percent-encode the text query, validate TLS, restrict redirects, set timeout, inspect HTTP
+ status/content type, validate expected JSON schema, enforce response length limits and reject HTML/empty
+ replies. Never invent an API key requirement; only show optional header/auth settings if provider needs them.
+ Endpoint may change or disappear.
+
+ Important: GET carries prompt text in URL/query logs and may hit URL-length limitations. The app must warn
+ before sending evidence externally, redact or minimize sensitive fields, cap GET payload and refuse
+ unsafe/oversized uploads. If the endpoint has no documented POST support, do not claim POST works;
+ support a second provider profile with POST only after testing it.
+
+ Editable custom instruction template
+ Recommended default: “Anda adalah editor laporan OSINT. Gunakan hanya fakta pada EVIDENCE_JSON.
+ Jangan menambah alamat, identitas, angka, sumber, waktu atau kesimpulan yang tidak ada. Pisahkan
+ temuan terverifikasi, kandidat, dan keterbatasan. Tulis Bahasa Indonesia yang jelas, teknis, ringkas, dan
+ netral. Jangan mengklaim bahwa dua profil milik orang yang sama hanya berdasarkan username. Jika bukti
+ tidak cukup, katakan tidak cukup.”
+
+ Allow a separate user custom instruction saved locally, versioned per report. Treat source data as untrusted
+ and surround it with clear structure; ignore any instructions embedded in gathered pages. Show the
+ combined prompt and evidence subset before sending.
+
+ LLM output contract
+ Preferred fields: summary, key_findings, limitations, conclusion; optionally confidence_explanations. Validate
+ with a typed parser. If provider only returns freeform text, perform strict sanitization, map sections
+ defensively and require user review. Do not let LLM set numeric totals, overwrite evidence or add unsourced
+ charts.
+
+ AI reliability tests
+  • GET smoke request and schema parsing; malformed JSON, empty result, status=false, non-200 and HTML
+    response.
+  • URL encoding for spaces, Bahasa Indonesia punctuation, Unicode and special characters.
+  • Input overflow and URL-too-long failure: no silent truncation; local report still generated.
+  • Timeout, DNS failure, TLS failure, rate limits, retry/backoff and circuit breaker; no infinite loops.
+  • Prompt-injection fixture: source data contains “ignore previous instructions”; AI summary must not follow
+    it.
+
+
+
+
+OSINTCLI / PRODUCT REQUIREMENTS DOCUMENT / R_HMT                                                                    7
+  • Fabrication check: controlled evidence has exactly 3 DNS items; generated prose cannot assert
+    unobserved entities/identities.
+  • Privacy review: do not send raw files, full local paths, API secrets, hidden user info, or sensitive metadata
+    without explicit opt-in.
+
+
+ 09 / PDF reporting contract
+ The PDF engine is deterministic and local. Use ReportLab + locally generated graphs (Matplotlib) and carefully
+ tested fonts. Tables are produced from normalized evidence, never fabricated by AI. Record report ID, case
+ ID, generation timestamp, generator version, dataset digest, AI provider (if any) and verified source
+ references.
+
+ Required report outline
+  • Cover: OSINTCLI visual identity, target, case ID, report date and confidentiality note.
+  • Executive summary: case metadata, source coverage, accurate counts; optional reviewed AI narration.
+  • Methodology: permitted scope, selected modules, collection windows, retrieval limits and known gaps.
+  • Evidence overview: counts by category/status, module success/failure, collection timeline.
+  • Evidence tables: normalized values, verification reason, URL/source, date/time and uncertainty.
+  • Data charts: bar chart by category, status distribution, time series only when dates support it.
+  • Relationship diagram: only source-backed entity links; show legend and edge evidence.
+  • Analysis & conclusions: separate observations from hypotheses; clear confidence basis.
+  • Appendix: sources, errors, missing sources, module versions, hash/trace, full evidence references.
+
+ Export capabilities
+
+  Type                Rules
+
+
+  PDF                 A4 portrait, page breaks, embedded fonts, wrap long URLs, repeat table headings, clickable source links.
+
+
+  JSON                Canonical machine-readable evidence and report metadata with version field.
+
+
+  CSV                 Flattened evidence table with safe escaping for formula-injection characters.
+
+
+  HTML                Optional accessible standalone report; sanitize untrusted input.
+
+
+  Images              PNG charts exported with explicit source data and generated timestamp.
+
+
+
+
+ PDF acceptance criteria
+  • At least one fixture with 0 records, one with 100+ records, Unicode names, Arabic/Indonesian text and very
+    long URLs.
+  • PDF can open on Android PDF viewers and desktop; no broken glyphs, clipped tables, blank charts, overlap
+    or missing sources.
+  • Compare graph sums to evidence queries. Inject mismatched AI counts and prove they cannot alter
+    computed statistics.
+  • No-AI report completes even if Nexray returns an error or goes offline.
+  • Metadata-only investigation still produces a coherent report without invented domain/IP results.
+  • Report filename is sanitized; save atomically and recover safely from interrupted export.
+  • Add golden/PDF render snapshot tests and inspect page images, not only file existence.
+
+
+
+
+OSINTCLI / PRODUCT REQUIREMENTS DOCUMENT / R_HMT                                                                                 8
+ Report storage
+ Termux stores canonical reports within app data. An “Export to Android Download” action should use Termux
+ storage permission when available; do not assume an Android Download path is writable without running
+ termux-setup-storage. On Linux, allow an explicit output directory.
+
+
+ 10 / Setup & installation
+ Build install scripts with feature probing; do not assume desktop apt packages or root access on Android. Ask
+ for storage permission only when exporting externally. Check Python version and availability of libs first;
+ display precise supported versions from testing, not invented compatibility claims.
+
+ pkg update
+ pkg install git python
+ # Once repository is created:
+ git clone https://github.com/<owner>/osintcli
+ cd osintcli
+ bash scripts/install-termux.sh
+ osintcli
+ The GitHub URL above is intentionally a placeholder, not a published repository. The installer must check
+ package/tool availability and fall back gracefully if a heavy dependency is unsupported. Optional modules are
+ installed only when requested.
+
+
+ 11 / Agent work order: end-to-end
+  Step                  Required work and output
+
+
+  01 — Discover         Verify upstream repos/commits/licenses and identify real maintainers, release activity, APIs, native
+                        Termux obstacles. Deliver audit matrix.
+
+
+  02 — Design           Write architecture, schema/migration plan, module contracts, threat model and narrow-terminal
+                        wireframes.
+
+
+  03 — Visuals          Use approved banner, design master icon, create and test ANSI conversion script with compact fallback.
+
+
+  04 — Bootstrap        Implement command, installer, local config, SQLite bootstrap, menu navigation and environment tests.
+
+
+  05 — Adapters         Implement each chosen upstream adapter using authentic outputs; capture fixtures and source
+                        provenance.
+
+
+  06 — Automation       Develop passive target routing, job controls, rate limits, cancellation and recovery.
+
+
+  07 — AI endpoint      Implement configurable Nexray GET adapter, custom instructions, external sharing consent and failure
+                        handling.
+
+
+  08 — Reports          Implement deterministic tables/charts/PDF and user review flow for AI prose.
+
+
+  09 — Test             Run unit/integration/end-to-end tests on Linux; test or explicitly mark unverified on real Termux.
+
+
+  10 — Release          Document commands, source licenses, screenshots/GIF of real terminal, known limitations, release
+                        notes; commit/push only with authorized repository access.
+
+
+
+
+ Definition of done
+  • Fresh Termux installation installs and launches with no manual SQLite setup.
+  • A permitted test domain, username, IP and metadata fixture can be processed with correct per-adapter
+    error states.
+
+
+
+OSINTCLI / PRODUCT REQUIREMENTS DOCUMENT / R_HMT                                                                               9
+  • All core paths have automated tests; robust negative cases and no unsupported feature claims.
+  • ANSI icon + menu usable on 40-column terminal without text clipping or broken keyboard navigation.
+  • AI endpoint smoke and failure cases pass; no-AI export path remains fully functional.
+  • PDF is verified by rendering and reading, including long lists, large data and zero-data cases.
+  • README includes original banner, provenance, installation, genuine demo media, license/credits and
+    explicit support matrix.
+  • A release is not labelled Termux-ready until a real Android/Termux run is documented.
+
+
+ 12 / Test plan and evidence matrix
+  Test group          Examples                                                 Pass evidence
+
+
+  Unit                Normalizer, validators, input escaping, DB migrations,   Automated test outputs with named cases
+                      report counts
+
+
+  Integration         Sherlock/Maigret adapter fixture, upstream errors,       Version-pin + parsed fixtures
+                      OSINT source changes
+
+
+  Endpoint            Smoke GET, long text, timeout, 429/500, JSON             Recorded redacted status and parsing results
+                      schema, prompt injection
+
+
+  PDF                 0/100 records, long URLs, charts, Unicode, no-AI         Rendered page images + extracted data checks
+                      fallback
+
+
+  UI                  32/40/60/80 cols, number input, Ctrl+C, degraded         Captured real terminal sessions
+                      ANSI
+
+
+  Android             Fresh Termux (ARM64), storage permission, restart,       Device version + screenshot + install logs
+                      file opening
+
+
+  Security            SSRF/redirect protections, secrets/log masking,          Negative security tests and findings
+                      command injection
+
+
+
+
+ Sample hard failures (must be handled)
+ Endpoint offline must yield “AI unavailable, report generated without AI”; provider response missing result
+ must display a parsing warning; unsupported adapter must be shown as OPTIONAL/UNAVAILABLE, not READY;
+ empty scan must not claim zero results means target does not exist; PDF export failure must leave evidence
+ intact; GET URLs must not appear in debug logs.
+
+
+
+
+OSINTCLI / PRODUCT REQUIREMENTS DOCUMENT / R_HMT                                                                              10
+ 13 / Security, quality and release governance
+  • Default collection is passive and permission-aware. Do not ship exploits, phishing, brute force, secret
+    extraction or stealth features.
+  • Reject local/internal address redirection for remotely retrieved arbitrary URLs; for user-authorized local
+    files, use safe path handling and size limits.
+  • Use least privilege and do not require root or extra Android permissions except when functionally
+    necessary.
+  • Mask sensitive content and API keys in tracebacks; set file permissions; support “delete case” and
+    controlled export.
+  • If package is bundled with GPL/AGPL components, verify obligations in writing. Attribution alone may be
+    insufficient.
+  • Automated tools should never claim verified identity from a name collision; always show source and
+    confidence basis.
+  • When external AI is enabled, consent is per submission of evidence set; avoid sending sensitive evidence
+    by default.
+  • Document known paid API sources as optional, not misleadingly label every source free.
+
+
+ 14 / README.md requirements
+ The README should feel like a mature security open-source project, not a generic AI marketing page. Use the
+ actual widescreen banner near the top, a short explanatory line, an accurate feature status table, installer
+ commands, a genuine mobile terminal recording, module/provider documentation, report sample,
+ threat/scope statement, troubleshooting, maintainer credits, and license/attribution.
+
+ README media specification
+
+  Asset                        Specification
+
+
+  Header banner                Approved 3:1 dark cyan/green OSINTCLI visual; responsive within GitHub markdown image rendering.
+
+
+  Icon                         Simple matching emblem; no repeated massive title inside terminal; target 24–30 monospace cells.
+
+
+  Demo GIF                     Record actual mobile-width running app; show menu, a fixture scan and output; never make a
+                               synthetic screenshot look real.
+
+
+  Visual references            assets/ + documented generation prompts + conversion script; no unsupported copyright claims.
+
+
+
+
+ Agent master prompt (copy-ready)
+ Build OSINTCLI V1 from this PRD end-to-end. Clone, inspect and legally integrate carefully selected upstream
+ open-source OSINT repositories, using reliable adapters rather than dumping all dependencies. Produce a
+ working mobile-first Python numbered CLI with small color ANSI emblem, auto investigation, SQLite bootstrap,
+ evidence normalization, custom-instruction Nexray HTTP AI adapter and deterministic PDF/graph reporting.
+ Use the approved README hero banner and create a reproducible icon-to-ANSI pipeline. Test actual features,
+ negative cases, PDF rendering and 40-column Termux compatibility. Keep remote AI optional and never allow
+ it to fabricate facts. Preserve upstream licensing and credits. Provide a test matrix, known limitations and
+ commit history; do not report success before proof. Deploy to GitHub only using authorized access and
+ verified target repository.
+
+
+
+
+OSINTCLI / PRODUCT REQUIREMENTS DOCUMENT / R_HMT                                                                               11
+ 15 / References & verification notes
+ Sherlock — https://github.com/sherlock-project/sherlock
+
+ Maigret — https://github.com/soxoj/maigret
+
+ Recon-ng — https://github.com/lanmaster53/recon-ng
+
+ SpiderFoot — https://github.com/smicallef/spiderfoot
+
+ theHarvester — https://github.com/laramies/theHarvester
+
+ ExifTool — https://github.com/exiftool/exiftool
+
+ BBOT — https://github.com/blacklanternsecurity/bbot
+
+ Nexray GET — https://api.nexray.eu.cc/ai/claude?text=Hai
+
+ ReportLab — https://www.reportlab.com/
+
+ Matplotlib — https://matplotlib.org/
+
+ Verification boundary: An external web retrieval showed a successful simple Nexray JSON response. A direct request from the
+ authoring runtime could not complete due to DNS/network restrictions. No upstream repositories were cloned into this PRD
+ generation session; all license/compatibility judgements are hypotheses to verify during the implementation audit. The artwork is a
+ generated design reference, not evidence that an application is running.
+
+
+
+
+OSINTCLI / PRODUCT REQUIREMENTS DOCUMENT / R_HMT                                                                                   12
+

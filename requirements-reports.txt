@@ -1,0 +1,8 @@
+# Direct dependency pins; native wheels depend on OS/architecture.
+reportlab==4.4.9
+Pillow==12.3.0
+pypdf==6.19.0
+arabic-reshaper==3.0.0
+python-bidi==0.4.2
+six==1.17.0
+charset-normalizer==3.4.7

@@ -1,0 +1,7 @@
+Target: example.com
+Scope: dns, rdap
+Depth: 1 / Ctrl+C: cancel
+[1/2] rdap: FAILED / 0 new / 0.5s
+[2/2] dns: PARTIAL / 2 new / 1.5s
+CASE_ID=cffefc252b04
+STATE=PARTIAL

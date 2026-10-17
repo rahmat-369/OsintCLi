@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rhmt-osintcli"
+version = "1.0.0"
+description = "Local-first modular OSINT terminal toolkit by R_HMT"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+authors = [{name = "R_HMT"}]
+dependencies = []
+
+[project.optional-dependencies]
+reports = ["reportlab==4.4.9", "Pillow==12.3.0", "pypdf==6.19.0", "arabic-reshaper==3.0.0", "python-bidi==0.4.2"]
+
+[project.scripts]
+osintcli = "osintcli.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/rahmat-369/OsintCLI"
+Issues = "https://github.com/rahmat-369/OsintCLI/issues"
+
+[tool.setuptools.packages.find]
+include = ["osintcli*"]
+
+[tool.setuptools.package-data]
+osintcli = ["assets/*"]

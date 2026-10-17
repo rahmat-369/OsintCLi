@@ -1,0 +1,5 @@
+username,name,url_main,url_user,exists,http_status,error_reason
+octocat,GitLab,https://gitlab.com/,https://gitlab.com/octocat,Available,200,
+octocat,Reddit,https://www.reddit.com/,https://www.reddit.com/user/octocat,Unknown,403,"Access denied error: 403 status code, it's recommended to use --cloudflare-bypass or a proxy, e.g. https://www.rapidproxy.io/?ref=soxoj"
+octocat,GitHub,https://www.github.com/,https://github.com/octocat,Claimed,200,
+octocat,GitHubGist,https://gist.github.com,https://gist.github.com/octocat,Claimed,200,
