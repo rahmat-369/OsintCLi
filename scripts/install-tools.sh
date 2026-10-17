@@ -3,6 +3,7 @@ set -euo pipefail
 project_dir="$(CDPATH='' cd -- "$(dirname -- "$0")/.." && pwd)"
 tool_name="${1:-}"
 case "$tool_name" in
+  user-scanner) upstream_url='https://github.com/kaifcodec/user-scanner'; pinned_commit='b85d470b48f7fb9d5ccff85080a882bf70049ed7';;
   sherlock) upstream_url='https://github.com/sherlock-project/sherlock'; pinned_commit='e40a45ec2a074b90703b3b4b842c8a3adbd6ada3';;
   maigret) upstream_url='https://github.com/soxoj/maigret'; pinned_commit='eaf820666d15bfd545129f3223e2261c27191e74';;
   exiftool)
@@ -12,7 +13,7 @@ case "$tool_name" in
       exit 0
     else echo 'Pasang ExifTool dari https://exiftool.org sesuai OS Anda.'; exit 0; fi
     exiftool -ver; exit 0;;
-  *) echo 'Usage: bash scripts/install-tools.sh sherlock|maigret|exiftool'; exit 2;;
+  *) echo 'Usage: bash scripts/install-tools.sh user-scanner|sherlock|maigret|exiftool'; exit 2;;
 esac
 command -v git >/dev/null || { echo 'Git diperlukan.'; exit 1; }
 tool_root="${OSINTCLI_DATA_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/osintcli}/tools/$tool_name"

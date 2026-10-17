@@ -1,0 +1,151 @@
+{
+  "schema_version": 1,
+  "report_id": "58eb68259e9d40e4",
+  "generator": "OsintCLI 1.0.1",
+  "generated_at": "2026-10-17T02:27:06+00:00",
+  "dataset_digest": "9d8bad83611be5e6d73b5145e6b018499f1f756799d966529b5ed7e9d2cdbed8",
+  "case": {
+    "id": "d2ef0b81d278",
+    "target": "octocat",
+    "kind": "username",
+    "created_at": "2026-10-17T02:26:52+00:00",
+    "state": "PARTIAL",
+    "scope": [
+      "maigret"
+    ]
+  },
+  "counts": {
+    "total": 4,
+    "by_category": {
+      "profile": 2,
+      "profile_check": 1,
+      "source_error": 1
+    },
+    "by_status": {
+      "CANDIDATE": 2,
+      "UNVERIFIED": 1,
+      "FAILED_SOURCE": 1
+    }
+  },
+  "jobs": [
+    {
+      "id": "9d46d75707a645499a7542b20be18c7f",
+      "case_id": "d2ef0b81d278",
+      "adapter": "maigret",
+      "state": "PARTIAL",
+      "started_at": "2026-10-17T02:26:52+00:00",
+      "ended_at": "2026-10-17T02:27:06+00:00",
+      "error_code": null,
+      "message": null,
+      "version": "external / version unverified"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "1198f1d87d9f4088",
+      "case_id": "d2ef0b81d278",
+      "entity_type": "profile",
+      "normalized_value": "https://gist.github.com/octocat",
+      "title": "GitHubGist",
+      "source_url": "https://gist.github.com/octocat",
+      "source_name": "https://gist.github.com/octocat",
+      "adapter_id": "maigret",
+      "collected_at": "2026-10-17T02:27:06+00:00",
+      "scope_id": "d2ef0b81d278",
+      "status": "CANDIDATE",
+      "verification_reason": "Maigret melaporkan Claimed; tinjauan manual diperlukan, bukan bukti identitas.",
+      "confidence_basis": "Observasi deterministik pada waktu pengambilan.",
+      "digest": "1ad69ccc5a6b8452ebdef0b53608dcf47624a2f1a5cf68e0482f6e211e8616ad",
+      "error_code": null,
+      "raw": {
+        "error_reason": "",
+        "exists": "Claimed",
+        "http_status": "200",
+        "name": "GitHubGist",
+        "url_main": "https://gist.github.com",
+        "url_user": "https://gist.github.com/octocat",
+        "username": "octocat"
+      }
+    },
+    {
+      "id": "4e7596936ff14d4a",
+      "case_id": "d2ef0b81d278",
+      "entity_type": "profile_check",
+      "normalized_value": "Tool melaporkan Available pada waktu pemeriksaan.",
+      "title": "GitLab",
+      "source_url": "https://gitlab.com/octocat",
+      "source_name": "https://gitlab.com/octocat",
+      "adapter_id": "maigret",
+      "collected_at": "2026-10-17T02:27:06+00:00",
+      "scope_id": "d2ef0b81d278",
+      "status": "UNVERIFIED",
+      "verification_reason": "Hasil negatif tool belum diverifikasi; bukan bukti akun tidak pernah ada.",
+      "confidence_basis": "Observasi deterministik pada waktu pengambilan.",
+      "digest": "8b3fdebdd16fc4cba60357acff1e2d23d62520fb4a00114f90f0dade5ccd0be8",
+      "error_code": null,
+      "raw": {
+        "error_reason": "",
+        "exists": "Available",
+        "http_status": "200",
+        "name": "GitLab",
+        "url_main": "https://gitlab.com/",
+        "url_user": "https://gitlab.com/octocat",
+        "username": "octocat"
+      }
+    },
+    {
+      "id": "72d19465b2ce4b76",
+      "case_id": "d2ef0b81d278",
+      "entity_type": "source_error",
+      "normalized_value": "Maigret: unknown; Access denied error: 403 status code, it's recommended to use --cloudflare-bypass or a proxy, e.g. https://www.rapidproxy.io/?ref=soxoj",
+      "title": "Sumber tidak tersedia",
+      "source_url": "https://www.reddit.com/user/octocat",
+      "source_name": "https://www.reddit.com/user/octocat",
+      "adapter_id": "maigret",
+      "collected_at": "2026-10-17T02:27:06+00:00",
+      "scope_id": "d2ef0b81d278",
+      "status": "FAILED_SOURCE",
+      "verification_reason": "Tidak dapat memperoleh bukti; bukan bukti ketiadaan.",
+      "confidence_basis": "Kegagalan akses/parsing sumber.",
+      "digest": "9ab89893cf8e99491addfe262d4d845bc8037378ed5c7f3bf46099769bffe49e",
+      "error_code": "UPSTREAM_CHECK",
+      "raw": {
+        "error_reason": "Access denied error: 403 status code, it's recommended to use --cloudflare-bypass or a proxy, e.g. https://www.rapidproxy.io/?ref=soxoj",
+        "exists": "Unknown",
+        "http_status": "403",
+        "name": "Reddit",
+        "url_main": "https://www.reddit.com/",
+        "url_user": "https://www.reddit.com/user/octocat",
+        "username": "octocat"
+      }
+    },
+    {
+      "id": "89f27903e68a4c42",
+      "case_id": "d2ef0b81d278",
+      "entity_type": "profile",
+      "normalized_value": "https://github.com/octocat",
+      "title": "GitHub",
+      "source_url": "https://github.com/octocat",
+      "source_name": "https://github.com/octocat",
+      "adapter_id": "maigret",
+      "collected_at": "2026-10-17T02:27:06+00:00",
+      "scope_id": "d2ef0b81d278",
+      "status": "CANDIDATE",
+      "verification_reason": "Maigret melaporkan Claimed; tinjauan manual diperlukan, bukan bukti identitas.",
+      "confidence_basis": "Observasi deterministik pada waktu pengambilan.",
+      "digest": "9c9efefb8bb745e7d5fa47473fac77f661a4f54480cba752d5236cc0d5aef28e",
+      "error_code": null,
+      "raw": {
+        "error_reason": "",
+        "exists": "Claimed",
+        "http_status": "200",
+        "name": "GitHub",
+        "url_main": "https://www.github.com/",
+        "url_user": "https://github.com/octocat",
+        "username": "octocat"
+      }
+    }
+  ],
+  "narrative": null,
+  "summary_only": false
+}

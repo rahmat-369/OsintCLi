@@ -16,3 +16,8 @@ reports/
 results/
 demo/
 .DS_Store
+
+Aksess
+.env*
+*credentials*
+output/

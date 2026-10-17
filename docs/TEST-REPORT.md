@@ -1,4 +1,6 @@
-# Release verification — OsintCLI 1.0.0
+# Historical release verification — OsintCLI 1.0.0
+
+**Superseded for current online functionality by [LIVE-VERIFICATION.md](LIVE-VERIFICATION.md), release 1.0.1.** This file preserves the original 1.0.0 results and limitations; current regression count is 90.
 
 Date: 17 October 2026, Asia/Jakarta. Runtime timestamps use UTC. Environment: Linux x86_64, Python 3.12.14. Physical Android/Termux was not available.
 

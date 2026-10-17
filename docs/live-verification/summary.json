@@ -1,0 +1,336 @@
+{
+  "version": "1.0.1",
+  "method": "Real CLI subprocesses -> HTTP public sources / local controlled file -> SQLite -> exports. No mocked network. Latest attempt identified per row; earlier failures retained under attempts.",
+  "transport": "explicit HTTPS proxy, exact approved sources",
+  "fully_available": false,
+  "results": [
+    {
+      "label": "domain",
+      "target": "example.com",
+      "modules": [
+        "dns",
+        "rdap",
+        "ct"
+      ],
+      "started_at": "2026-10-17T02:23:23+00:00",
+      "duration_seconds": 28.22,
+      "exit_code": 0,
+      "verdict": "PASS",
+      "checks": {
+        "case_saved": true,
+        "json_export": true,
+        "dns_a_values": true,
+        "rdap_domain": true,
+        "ct_names": true
+      },
+      "case_id": "8d30f26f711c",
+      "case_state": "DONE",
+      "evidence_count": 22,
+      "counts_by_status": {
+        "VERIFIED": 15,
+        "CANDIDATE": 7
+      },
+      "export_exit": 0,
+      "source_errors": [],
+      "run_name": "full"
+    },
+    {
+      "label": "ip",
+      "target": "1.1.1.1",
+      "modules": [
+        "rdap",
+        "asn"
+      ],
+      "started_at": "2026-10-17T02:23:40+00:00",
+      "duration_seconds": 16.5,
+      "exit_code": 0,
+      "verdict": "PASS",
+      "checks": {
+        "case_saved": true,
+        "json_export": true,
+        "rdap_network": true,
+        "asn_cloudflare": true
+      },
+      "case_id": "053d45f58fe2",
+      "case_state": "DONE",
+      "evidence_count": 11,
+      "counts_by_status": {
+        "VERIFIED": 11
+      },
+      "export_exit": 0,
+      "source_errors": [],
+      "run_name": "full"
+    },
+    {
+      "label": "email",
+      "target": "test@example.com",
+      "modules": [
+        "email"
+      ],
+      "started_at": "2026-10-17T02:24:09+00:00",
+      "duration_seconds": 28.8,
+      "exit_code": 0,
+      "verdict": "PASS",
+      "checks": {
+        "case_saved": true,
+        "json_export": true,
+        "syntax": true,
+        "mail_dns": true,
+        "spf": true
+      },
+      "case_id": "c58131ae78b1",
+      "case_state": "DONE",
+      "evidence_count": 5,
+      "counts_by_status": {
+        "VERIFIED": 5
+      },
+      "export_exit": 0,
+      "source_errors": [],
+      "run_name": "full"
+    },
+    {
+      "label": "website",
+      "target": "example.com",
+      "modules": [
+        "web"
+      ],
+      "started_at": "2026-10-17T02:24:33+00:00",
+      "duration_seconds": 24.33,
+      "exit_code": 0,
+      "verdict": "PASS",
+      "checks": {
+        "case_saved": true,
+        "json_export": true,
+        "homepage_observed": true
+      },
+      "case_id": "f40368133d30",
+      "case_state": "DONE",
+      "evidence_count": 3,
+      "counts_by_status": {
+        "VERIFIED": 1,
+        "UNVERIFIED": 2
+      },
+      "export_exit": 0,
+      "source_errors": [],
+      "run_name": "full"
+    },
+    {
+      "label": "tls",
+      "target": "example.com",
+      "modules": [
+        "tls"
+      ],
+      "started_at": "2026-10-17T02:24:33+00:00",
+      "duration_seconds": 0.09,
+      "exit_code": 2,
+      "verdict": "UNVERIFIED_DIRECT_NETWORK_REQUIRED",
+      "checks": {
+        "case_saved": true,
+        "json_export": true,
+        "origin_certificate": false
+      },
+      "case_id": "3f81831ea59e",
+      "case_state": "PARTIAL",
+      "evidence_count": 1,
+      "counts_by_status": {
+        "FAILED_SOURCE": 1
+      },
+      "export_exit": 0,
+      "source_errors": [
+        {
+          "adapter": "tls",
+          "code": "DIRECT_REQUIRED",
+          "source": "tls",
+          "message": "Pengambilan sertifikat TLS memerlukan koneksi langsung agar sertifikat proxy tidak dianggap sertifikat target."
+        }
+      ],
+      "run_name": "full"
+    },
+    {
+      "label": "username-positive",
+      "target": "octocat",
+      "modules": [
+        "username"
+      ],
+      "completed_at": "2026-10-17T02:27:40+00:00",
+      "duration_seconds": 21.4,
+      "exit_code": 2,
+      "verdict": "PASS_WITH_SOURCE_GAPS",
+      "checks": {
+        "case_saved": true,
+        "json_export": true,
+        "github_login_id": true
+      },
+      "case_id": "6bd03f232037",
+      "case_state": "PARTIAL",
+      "evidence_count": 3,
+      "counts_by_status": {
+        "CANDIDATE": 1,
+        "UNVERIFIED": 1,
+        "FAILED_SOURCE": 1
+      },
+      "export_exit": 0,
+      "source_errors": [
+        {
+          "adapter": "username",
+          "code": "HTTP_403",
+          "source": "https://www.reddit.com/user/octocat/about.json",
+          "message": "Respons 403; hasil tidak pasti."
+        }
+      ],
+      "run_name": "profile-apis"
+    },
+    {
+      "label": "username-negative",
+      "target": "osintcli-no-account-20261017-7fe93c",
+      "modules": [
+        "username"
+      ],
+      "completed_at": "2026-10-17T02:27:53+00:00",
+      "duration_seconds": 12.7,
+      "exit_code": 2,
+      "verdict": "PASS_WITH_SOURCE_GAPS",
+      "checks": {
+        "case_saved": true,
+        "json_export": true,
+        "negative_control": true
+      },
+      "case_id": "8342babdf943",
+      "case_state": "PARTIAL",
+      "evidence_count": 3,
+      "counts_by_status": {
+        "UNVERIFIED": 2,
+        "FAILED_SOURCE": 1
+      },
+      "export_exit": 0,
+      "source_errors": [
+        {
+          "adapter": "username",
+          "code": "HTTP_403",
+          "source": "https://www.reddit.com/user/osintcli-no-account-20261017-7fe93c/about.json",
+          "message": "Respons 403; hasil tidak pasti."
+        }
+      ],
+      "run_name": "profile-apis"
+    },
+    {
+      "label": "metadata",
+      "target": "controlled-local-test.jpg",
+      "modules": [
+        "metadata"
+      ],
+      "started_at": "2026-10-17T02:25:23+00:00",
+      "duration_seconds": 0.1,
+      "exit_code": 0,
+      "verdict": "PASS",
+      "checks": {
+        "case_saved": true,
+        "json_export": true,
+        "dimensions": true,
+        "sha256": true,
+        "artist": true
+      },
+      "case_id": "1e940b1d26fe",
+      "case_state": "DONE",
+      "evidence_count": 3,
+      "counts_by_status": {
+        "VERIFIED": 3
+      },
+      "export_exit": 0,
+      "source_errors": [],
+      "run_name": "full"
+    },
+    {
+      "label": "sherlock",
+      "target": "octocat",
+      "modules": [
+        "sherlock"
+      ],
+      "completed_at": "2026-10-17T02:29:45+00:00",
+      "duration_seconds": 23.79,
+      "exit_code": 0,
+      "verdict": "PASS",
+      "checks": {
+        "case_saved": true,
+        "json_export": true,
+        "github_candidate": true
+      },
+      "case_id": "dfd5a38a17f6",
+      "case_state": "DONE",
+      "evidence_count": 3,
+      "counts_by_status": {
+        "CANDIDATE": 2,
+        "UNVERIFIED": 1
+      },
+      "export_exit": 0,
+      "source_errors": [],
+      "run_name": "sherlock-final"
+    },
+    {
+      "label": "maigret",
+      "target": "octocat",
+      "modules": [
+        "maigret"
+      ],
+      "completed_at": "2026-10-17T02:27:06+00:00",
+      "duration_seconds": 13.93,
+      "exit_code": 2,
+      "verdict": "PASS_WITH_SOURCE_GAPS",
+      "checks": {
+        "case_saved": true,
+        "json_export": true,
+        "github_candidate": true
+      },
+      "case_id": "d2ef0b81d278",
+      "case_state": "PARTIAL",
+      "evidence_count": 4,
+      "counts_by_status": {
+        "CANDIDATE": 2,
+        "UNVERIFIED": 1,
+        "FAILED_SOURCE": 1
+      },
+      "export_exit": 0,
+      "source_errors": [
+        {
+          "adapter": "maigret",
+          "code": "UPSTREAM_CHECK",
+          "source": "https://www.reddit.com/user/octocat",
+          "message": "Maigret: unknown; Access denied error: 403 status code, it's recommended to use --cloudflare-bypass or a proxy, e.g. https://www.rapidproxy.io/?ref=soxoj"
+        }
+      ],
+      "run_name": "tools-repaired"
+    },
+    {
+      "label": "exiftool",
+      "target": "controlled-local-test.jpg",
+      "modules": [
+        "exiftool"
+      ],
+      "started_at": "2026-10-17T02:25:24+00:00",
+      "duration_seconds": 0.24,
+      "exit_code": 0,
+      "verdict": "PASS",
+      "checks": {
+        "case_saved": true,
+        "json_export": true,
+        "dimensions": true,
+        "artist": true
+      },
+      "case_id": "3fc63c94cb31",
+      "case_state": "DONE",
+      "evidence_count": 24,
+      "counts_by_status": {
+        "VERIFIED": 24
+      },
+      "export_exit": 0,
+      "source_errors": [],
+      "run_name": "full"
+    }
+  ],
+  "provider_smoke": {
+    "http_status": 200,
+    "content_type": "text/html",
+    "verdict": "UNAVAILABLE",
+    "body_preview": "<html>\n    <head><title>Site Unavailable</title></head>\n    <body>\n      <center>\n        <h1>Site Unavailable</h1>\n        <p>Unable to access this site.</p>\n      </center>\n    </body>\n</html>\n"
+  }
+}

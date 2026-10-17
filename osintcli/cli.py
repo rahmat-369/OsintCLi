@@ -18,12 +18,13 @@ from .ai import build_prompt,narrate,request_args
 
 def doctor(config):
     rows={"version":__version__,"python":sys.version.split()[0],"platform":sys.platform,"data":str(config.data),"config":str(config.path),"core":"READY","reports":{},"tools":{}}
-    for name in ("reportlab","PIL","pypdf","arabic_reshaper","bidi"):
+    for name in ("reportlab","PIL","pypdf","arabic_reshaper","bidi","docx"):
         rows["reports"][name]="READY" if importlib.util.find_spec(name) else "UNAVAILABLE"
     for name in PINS:
         path=executable(name,config)
         rows["tools"][name]={"status":"INSTALLED (live compatibility must be checked)" if path else "OPTIONAL / UNAVAILABLE","path":path,"audited_commit":PINS[name]}
     rows["network"]="Not tested by doctor; use scan for a selected public target."
+    rows["network"]={"transport":config["http_transport"],"live_test":"Gunakan scan untuk menguji sumber."}
     return rows
 
 
@@ -42,15 +43,19 @@ def scan_flow(ui,config,kind="auto"):
     kind,value=target(value,kind)
     names=scope_for(kind)
     if kind=="username":
-        choice=ui.ask("Engine: 1 builtin / 2 Sherlock / 3 Maigret / 0 kembali")
+        choice=ui.ask("Engine: 1 Fusion / 2 Sherlock / 3 Maigret / 4 User Scanner / 5 builtin / 0 kembali")
         if choice=="0":return
-        if choice not in ("","1","2","3"):raise AppError("INPUT","Pilihan tidak valid.")
-        names=[{"2":"sherlock","3":"maigret"}.get(choice,"username")]
+        if choice not in ("","1","2","3","4","5"):raise AppError("INPUT","Pilihan tidak valid.")
+        names=[{"2":"sherlock","3":"maigret","4":"user-scanner","5":"username"}.get(choice,"fusion")]
+    if "fusion" in names:
+        mode=ui.ask("Mode: quick / standard [default] / deep / 0 kembali")
+        if mode=="0":return
+        config.set("fusion_mode",mode or "standard")
     if kind=="domain" and ui.confirm("Tambahkan HTTP/TLS langsung ke website?"):names += ["web","tls"]
     if kind=="metadata":
         ui.put("Metadata bisa mengandung GPS/identitas. File diproses lokal.")
         if executable("exiftool",config) and ui.confirm("Tambahkan ExifTool lokal?"):names += ["exiftool"]
-    ui.heading("Scope preview");ui.put(value);ui.put("Modul: "+", ".join(names));ui.put("Kedalaman 1; tanpa ekspansi otomatis.")
+    ui.heading("Scope preview");ui.put(value);ui.put("Modul: "+", ".join(names));ui.put("Fusion: "+config["fusion_mode"]+" / batas "+str(config["fusion_max_nodes"])+" halaman" if "fusion" in names else "Scope modul terpilih.")
     if not ui.confirm("Target berizin/publik dan scope sesuai. Jalankan?"):return
     ui.put("Mengambil sumber... Ctrl+C: hentikan.")
     start=time.monotonic()
@@ -80,24 +85,25 @@ def ai_flow(ui,config,db):
 def report_flow(ui,config,db):
     cid=choose_case(ui,db)
     if not cid:return
-    formats=ui.ask("Format: pdf,json,csv,html,png [semua] / 0 kembali")
+    formats=ui.ask("Format: pdf,docx,json,csv,html,png [semua] / 0 kembali")
     if formats=="0":return
-    formats=[x.strip() for x in formats.split(",")] if formats else ["pdf","json","csv","html","png"]
-    summary=ui.confirm("PDF ringkasan (maks 15 evidence)?")
+    formats=[x.strip() for x in formats.split(",")] if formats else ["pdf","docx","json","csv","html","png"]
+    summary=ui.confirm("Laporan ringkasan (maks 15 evidence)?") if any(f in formats for f in ("pdf","docx")) else False
     ai=bool(db.narrative(cid,True)) and ui.confirm("Sertakan narasi AI yang sudah reviewed?")
-    out=ui.ask("Folder output (Enter: lokal / android / 0 kembali)")
+    out=ui.ask("Folder output (Enter/lokal: folder laporan / android / path / 0 kembali)")
     if out=="0":return
+    if out=="lokal":out=""
     if out=="android":
         p=Path.home()/"storage/downloads"
         if not p.is_dir() or not os.access(p,os.W_OK):raise AppError("STORAGE","Jalankan termux-setup-storage, izinkan akses, lalu ulangi export.")
         out=str(p/"OsintCLI"/cid)
-    for path in export(db,cid,formats,out or None,ai,summary):ui.put("Tersimpan: "+str(path))
+    for path in export(db,cid,formats,out or None,ai,summary):ui.path(path,"Tersimpan: ")
 
 
 def interactive(config,ui):
     db=Store(config)
     with ProcessLock(config):db.recover()
-    ui.banner()
+    ui.startup(config,db)
     while True:
         ui.menu()
         try:
@@ -108,8 +114,10 @@ def interactive(config,ui):
             elif n==7:
                 cid=choose_case(ui,db)
                 if cid:
-                    action=ui.ask("1 evidence / 2 resume / 3 hapus / 0 kembali")
+                    action=ui.ask("1 evidence / 2 resume / 3 hapus / 4 hubungan / 5 review / 0 kembali")
                     if action=="1":ui.evidence(db.evidence(cid))
+                    elif action=="4":show_graph(ui,db,cid)
+                    elif action=="5":review_flow(ui,db,cid)
                     elif action=="2":
                         run(config,"",resume=cid,progress=lambda i,t,n,s,c:ui.put(f"[{i}/{t}] {n}: {s}"));ui.put("Status: "+db.case(cid)["state"])
                     elif action=="3" and ui.confirm("Hapus kasus dan laporan lokalnya?"):
@@ -119,15 +127,40 @@ def interactive(config,ui):
             elif n==9:report_flow(ui,config,db)
             elif n==10:
                 ui.put(json.dumps(doctor(config),indent=2,ensure_ascii=False))
-                ui.put("Tools: bash scripts/install-tools.sh sherlock|maigret|exiftool")
+                ui.put("Tools: bash scripts/install-tools.sh user-scanner|sherlock|maigret|exiftool")
                 key=ui.ask("Nama setting untuk edit (0: kembali)")
                 if key!="0":
                     if key not in config.values:raise AppError("CONFIG","Nama setting tidak dikenal.")
                     ui.put("Saat ini: "+str(config[key]));config.set(key,ui.ask("Nilai baru"));ui.put("Disimpan.")
-            else:ui.put("Pilih 00-10.")
+            elif n in (11,12):scan_flow(ui,config,"profile" if n==11 else "phone")
+            else:ui.put("Pilih 00-12.")
         except (ValueError,AppError) as e:ui.put(f"Gagal: {e}")
         except KeyboardInterrupt:ui.put("Dibatalkan. Kembali ke menu.")
         except EOFError:return 0
+
+
+def show_graph(ui,db,cid):
+    edges=db.graph(cid)
+    if not edges:ui.put("Belum ada hubungan publik dalam kasus ini.")
+    for edge in edges:
+        ui.heading(edge["evidence_id"]+" / "+edge["review"]["decision"])
+        ui.put(edge["from"]+"\n→ "+edge["to"])
+        ui.put(edge["relation"]+" / depth "+str(edge["depth"]))
+        ui.put("Sumber: "+edge["source_url"])
+        if edge["review"].get("note"):ui.put("Catatan: "+edge["review"]["note"])
+
+
+def review_flow(ui,db,cid):
+    ui.evidence([r for r in db.evidence(cid) if r["entity_type"] in ("profile","relationship")])
+    eid=ui.ask("Evidence ID (0 kembali)")
+    if eid=="0":return
+    choice=ui.ask("1 terima / 2 tolak / 3 pending / 0 kembali")
+    if choice=="0":return
+    decision={"1":"accepted","2":"rejected","3":"pending"}.get(choice)
+    if not decision:raise AppError("REVIEW","Pilihan tidak valid.")
+    note=ui.ask("Catatan alasan review")
+    db.review_evidence(cid,eid,decision,note)
+    ui.put("Review disimpan. Penerimaan adalah penilaian Anda, bukan verifikasi identitas otomatis.")
 
 
 def parser():
@@ -137,19 +170,23 @@ def parser():
     s=p.add_subparsers(dest="command")
     s.add_parser("menu");s.add_parser("doctor")
     a=s.add_parser("scan",help="Preview and run a public/authorized target")
-    a.add_argument("target");a.add_argument("--kind",choices=["auto","domain","ip","email","username","metadata"],default="auto")
+    a.add_argument("target");a.add_argument("--kind",choices=["auto","domain","ip","email","username","metadata","profile","phone"],default="auto")
+    a.add_argument("--mode",choices=["quick","standard","deep"])
+    a.add_argument("--max-nodes",type=int)
     a.add_argument("--modules",help="Comma-separated selected adapters")
     a.add_argument("--yes",action="store_true",help="Confirm displayed scope and target authorization")
     a=s.add_parser("resume");a.add_argument("case_id");a.add_argument("--yes",action="store_true")
     s.add_parser("history")
     a=s.add_parser("show");a.add_argument("case_id");a.add_argument("--json",action="store_true")
     a=s.add_parser("delete");a.add_argument("case_id");a.add_argument("--yes",action="store_true")
-    a=s.add_parser("report");a.add_argument("case_id");a.add_argument("--formats",default="pdf,json,csv,html,png");a.add_argument("--out");a.add_argument("--include-ai",action="store_true");a.add_argument("--summary",action="store_true")
+    a=s.add_parser("report");a.add_argument("case_id");a.add_argument("--formats",default="pdf,docx,json,csv,html,png");a.add_argument("--out");a.add_argument("--include-ai",action="store_true");a.add_argument("--summary",action="store_true")
     a=s.add_parser("demo",help="Create a labelled offline fixture case")
     a.add_argument("--count",type=int,default=12);a.add_argument("--report",action="store_true");a.add_argument("--out")
     a=s.add_parser("config");a.add_argument("key",nargs="?");a.add_argument("value",nargs="?")
     a=s.add_parser("ai");a.add_argument("case_id");a.add_argument("--limit",type=int,default=1);a.add_argument("--include-sensitive",action="store_true");a.add_argument("--send",action="store_true");a.add_argument("--yes",action="store_true",help="Explicit consent to displayed evidence leaving device")
     a=s.add_parser("review");a.add_argument("case_id");a.add_argument("--approve",action="store_true")
+    a=s.add_parser("graph");a.add_argument("case_id");a.add_argument("--json",action="store_true")
+    a=s.add_parser("evidence-review");a.add_argument("case_id");a.add_argument("evidence_id");a.add_argument("decision",choices=["accepted","rejected","pending"]);a.add_argument("--note",required=True)
     return p
 
 
@@ -163,8 +200,10 @@ def main(argv=None):
             return interactive(config,ui)
         if cmd=="doctor":print(json.dumps(doctor(config),indent=2,ensure_ascii=False))
         elif cmd=="scan":
+            if args.mode:config.set("fusion_mode",args.mode)
+            if args.max_nodes is not None:config.set("fusion_max_nodes",args.max_nodes)
             kind,value=target(args.target,args.kind);names=scope_for(kind,args.modules.split(",") if args.modules else None)
-            ui.put("Target: "+value+"\nScope: "+", ".join(names)+"\nDepth: 1 / Ctrl+C: cancel")
+            ui.put("Target: "+value+"\nScope: "+", ".join(names)+"\nMode: "+config["fusion_mode"]+" / Ctrl+C: cancel")
             if not args.yes:ui.put("Preview saja. Tambahkan --yes untuk menjalankan scope berizin ini.");return 0
             start=time.monotonic()
             cid=run(config,value,kind,names,lambda i,t,n,s,c:ui.put(f"[{i}/{t}] {n}: {s} / {c} new / {time.monotonic()-start:.1f}s"))
@@ -187,13 +226,13 @@ def main(argv=None):
             with ProcessLock(config):db.delete(args.case_id)
             ui.put("Kasus dihapus.")
         elif cmd=="report":
-            for path in export(db,args.case_id,args.formats.split(","),args.out,args.include_ai,args.summary):ui.put(str(path))
+            for path in export(db,args.case_id,args.formats.split(","),args.out,args.include_ai,args.summary):ui.path(path)
         elif cmd=="demo":
             if not 0<=args.count<=1000:raise AppError("INPUT","Demo count harus 0-1000.")
             with ProcessLock(config):cid=demo(config,args.count)
             ui.put("OFFLINE FIXTURE / CASE_ID="+cid)
             if args.report:
-                for path in export(db,cid,out=args.out):ui.put(str(path))
+                for path in export(db,cid,out=args.out):ui.path(path)
         elif cmd=="config":
             if args.key is None:print(json.dumps(config.values,indent=2,ensure_ascii=False))
             elif args.value is None:
@@ -207,6 +246,11 @@ def main(argv=None):
             if not args.send:ui.put("Belum dikirim. Gunakan --send --yes setelah meninjau preview.");return 0
             nid=narrate(db,args.case_id,prompt,consent=args.yes)
             ui.put("NARRATIVE_ID="+nid);ui.put(db.narrative(args.case_id)["text"]);ui.put("Tinjau dengan review CASE_ID sebelum masuk laporan.")
+        elif cmd=="graph":
+            if args.json:print(json.dumps(db.graph(args.case_id),ensure_ascii=False,indent=2))
+            else:show_graph(ui,db,args.case_id)
+        elif cmd=="evidence-review":
+            db.review_evidence(args.case_id,args.evidence_id,args.decision,args.note);ui.put("Review disimpan; bukti asli tetap tersimpan.")
         elif cmd=="review":
             narrative=db.narrative(args.case_id)
             if not narrative:raise AppError("NARRATIVE","Tidak ada narasi untuk dataset terbaru.")

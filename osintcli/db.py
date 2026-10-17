@@ -19,11 +19,21 @@ class Store:
         self.path = config.data/"osintcli.db"
         with self.connect() as c:
             v=c.execute("PRAGMA user_version").fetchone()[0]
-            if v>1: raise AppError("DB_VERSION", "Database lebih baru dari aplikasi.")
+            if v>2: raise AppError("DB_VERSION", "Database lebih baru dari aplikasi.")
             if v<1:
                 if self.path.exists() and self.path.stat().st_size:
                     with sqlite3.connect(str(self.path)+".backup") as b: c.backup(b)
                 c.executescript(SCHEMA)
+            if v<2:
+                if v==1:
+                    with sqlite3.connect(str(self.path)+".v1.backup") as backup:c.backup(backup)
+                c.executescript("""
+                CREATE TABLE IF NOT EXISTS evidence_reviews(
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    evidence_id TEXT REFERENCES evidence(id) ON DELETE CASCADE,
+                    decision TEXT NOT NULL, note TEXT NOT NULL, reviewed_at TEXT NOT NULL);
+                PRAGMA user_version=2;
+                """)
             c.execute("PRAGMA journal_mode=WAL")
         self.path.chmod(0o600)
 
@@ -90,7 +100,25 @@ class Store:
                 for r in rows:r["raw"]=json.loads(c.execute("SELECT raw_json FROM raw_evidence WHERE evidence_id=?",(r["id"],)).fetchone()[0])
         return rows
 
-    def dataset_digest(self,cid): return digest(self.evidence(cid,raw=True))
+    def review_evidence(self,cid,eid,decision,note):
+        if decision not in ("accepted","rejected","pending"):raise AppError("REVIEW","Decision: accepted/rejected/pending.")
+        note=note.strip()
+        if not note or len(note)>1000:raise AppError("REVIEW","Catatan review wajib, maksimal 1000 karakter.")
+        with self.connect() as c:
+            row=c.execute("SELECT entity_type FROM evidence WHERE id=? AND case_id=?",(eid,cid)).fetchone()
+            if not row or row[0] not in ("relationship","profile"):raise AppError("REVIEW","Pilih evidence profil/hubungan dalam kasus ini.")
+            c.execute("INSERT INTO evidence_reviews(evidence_id,decision,note,reviewed_at) VALUES(?,?,?,?)",(eid,decision,note,now()))
+
+    def reviews(self,cid):
+        self.case(cid)
+        with self.connect() as c:
+            return [dict(x) for x in c.execute("SELECT r.* FROM evidence_reviews r JOIN evidence e ON e.id=r.evidence_id WHERE e.case_id=? ORDER BY r.id",(cid,))]
+
+    def graph(self,cid):
+        latest={r["evidence_id"]:r for r in self.reviews(cid)}
+        return [{"evidence_id":r["id"],"source_url":r["source_url"],"collected_at":r["collected_at"],**r["raw"],"review":latest.get(r["id"],{"decision":"pending","note":""})} for r in self.evidence(cid,True) if r["entity_type"]=="relationship" and isinstance(r["raw"],dict)]
+
+    def dataset_digest(self,cid): return digest({"evidence":self.evidence(cid,raw=True),"reviews":self.reviews(cid)})
 
     def delete(self,cid):
         self.case(cid)

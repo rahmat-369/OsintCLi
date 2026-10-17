@@ -1,0 +1,24 @@
+LIVE CHECK: domain
+domain PASS evidence 22 state DONE checks {'case_saved': True, 'json_export': True, 'dns_a_values': True, 'rdap_domain': True, 'ct_names': True}
+LIVE CHECK: ip
+ip PASS evidence 11 state DONE checks {'case_saved': True, 'json_export': True, 'rdap_network': True, 'asn_cloudflare': True}
+LIVE CHECK: email
+email PASS evidence 5 state DONE checks {'case_saved': True, 'json_export': True, 'syntax': True, 'mail_dns': True, 'spf': True}
+LIVE CHECK: website
+website PASS evidence 3 state DONE checks {'case_saved': True, 'json_export': True, 'homepage_observed': True}
+LIVE CHECK: tls
+tls UNVERIFIED_DIRECT_NETWORK_REQUIRED evidence 1 state PARTIAL checks {'case_saved': True, 'json_export': True, 'origin_certificate': False}
+LIVE CHECK: username-positive
+username-positive PASS_WITH_SOURCE_GAPS evidence 3 state PARTIAL checks {'case_saved': True, 'json_export': True, 'github_login_id': True}
+LIVE CHECK: username-negative
+username-negative PASS_WITH_SOURCE_GAPS evidence 3 state PARTIAL checks {'case_saved': True, 'json_export': True, 'negative_control': True}
+LIVE CHECK: metadata
+metadata PASS evidence 3 state DONE checks {'case_saved': True, 'json_export': True, 'dimensions': True, 'sha256': True, 'artist': True}
+LIVE CHECK: sherlock
+sherlock FAIL evidence 1 state PARTIAL checks {'case_saved': True, 'json_export': True, 'github_candidate': False}
+LIVE CHECK: maigret
+maigret FAIL evidence 1 state PARTIAL checks {'case_saved': True, 'json_export': True, 'github_candidate': False}
+LIVE CHECK: exiftool
+exiftool PASS evidence 24 state DONE checks {'case_saved': True, 'json_export': True, 'dimensions': True, 'artist': True}
+SUMMARY /workspace/scratch/62394965b2c5/live-verification-v101/full/summary.json
+AI {'http_status': 200, 'content_type': 'text/html', 'verdict': 'UNAVAILABLE', 'body_preview': '<html>\n    <head><title>Site Unavailable</title></head>\n    <body>\n      <center>\n        <h1>Site Unavailable</h1>\n        <p>Unable to access this site.</p>\n      </center>\n    </body>\n</html>\n'}

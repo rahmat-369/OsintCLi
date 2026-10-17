@@ -6,3 +6,5 @@ arabic-reshaper==3.0.0
 python-bidi==0.4.2
 six==1.17.0
 charset-normalizer==3.4.7
+python-docx==1.2.0
+lxml==6.0.2

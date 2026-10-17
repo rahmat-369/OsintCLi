@@ -1,0 +1,6 @@
+Target: example.com
+Scope: tls
+Depth: 1 / Ctrl+C: cancel
+[1/1] tls: FAILED / 0 new / 0.0s
+CASE_ID=3f81831ea59e
+STATE=PARTIAL

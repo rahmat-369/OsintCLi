@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "report_id": "19a1342958834516",
+  "generator": "OsintCLI 1.0.1",
+  "generated_at": "2026-10-17T02:24:33+00:00",
+  "dataset_digest": "9f677684117c5112c1181cf2af33a3e304dce418195ad303f3ce995b013fb385",
+  "case": {
+    "id": "f40368133d30",
+    "target": "example.com",
+    "kind": "domain",
+    "created_at": "2026-10-17T02:24:09+00:00",
+    "state": "DONE",
+    "scope": [
+      "web"
+    ]
+  },
+  "counts": {
+    "total": 3,
+    "by_category": {
+      "http": 3
+    },
+    "by_status": {
+      "VERIFIED": 1,
+      "UNVERIFIED": 2
+    }
+  },
+  "jobs": [
+    {
+      "id": "9a1d344e23074cfd94223a1ec1fc82d6",
+      "case_id": "f40368133d30",
+      "adapter": "web",
+      "state": "DONE",
+      "started_at": "2026-10-17T02:24:09+00:00",
+      "ended_at": "2026-10-17T02:24:33+00:00",
+      "error_code": null,
+      "message": null,
+      "version": "builtin-1.0.1"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "ee52c9ebc9cd478e",
+      "case_id": "f40368133d30",
+      "entity_type": "http",
+      "normalized_value": "{\"bytes\":577,\"headers\":{\"content-type\":\"text/html; charset=utf-8\",\"last-modified\":\"Tue, 13 Oct 2026 22:05:48 GMT\",\"server\":\"cloudflare\"},\"status\":200}",
+      "title": "HTTP /",
+      "source_url": "https://example.com/",
+      "source_name": "https://example.com/",
+      "adapter_id": "web",
+      "collected_at": "2026-10-17T02:24:17+00:00",
+      "scope_id": "f40368133d30",
+      "status": "VERIFIED",
+      "verification_reason": "Nilai diamati langsung pada respons sumber; bukan validasi kepemilikan/identitas.",
+      "confidence_basis": "Observasi deterministik pada waktu pengambilan.",
+      "digest": "117e01b1431f3de2211d8dd98e9e76b86779b5df54e0423f8d1b896a0cf148a9",
+      "error_code": null,
+      "raw": {
+        "headers": {
+          "content-type": "text/html; charset=utf-8",
+          "last-modified": "Tue, 13 Oct 2026 22:05:48 GMT",
+          "server": "cloudflare"
+        },
+        "status": 200
+      }
+    },
+    {
+      "id": "8ab8e0b301be4348",
+      "case_id": "f40368133d30",
+      "entity_type": "http",
+      "normalized_value": "{\"bytes\":577,\"headers\":{\"content-type\":\"text/html; charset=utf-8\",\"server\":\"cloudflare\"},\"status\":404}",
+      "title": "HTTP /robots.txt",
+      "source_url": "https://example.com/robots.txt",
+      "source_name": "https://example.com/robots.txt",
+      "adapter_id": "web",
+      "collected_at": "2026-10-17T02:24:25+00:00",
+      "scope_id": "f40368133d30",
+      "status": "UNVERIFIED",
+      "verification_reason": "Nilai diamati langsung pada respons sumber; bukan validasi kepemilikan/identitas.",
+      "confidence_basis": "Observasi deterministik pada waktu pengambilan.",
+      "digest": "cf1cbe2bede91037b1482a06cc6b318aff8dfe52ac11a16196202ade7a38f6da",
+      "error_code": null,
+      "raw": {
+        "headers": {
+          "content-type": "text/html; charset=utf-8",
+          "server": "cloudflare"
+        },
+        "status": 404
+      }
+    },
+    {
+      "id": "55c1dc7167ab40a6",
+      "case_id": "f40368133d30",
+      "entity_type": "http",
+      "normalized_value": "{\"bytes\":577,\"headers\":{\"content-type\":\"text/html; charset=utf-8\",\"server\":\"cloudflare\"},\"status\":404}",
+      "title": "HTTP /sitemap.xml",
+      "source_url": "https://example.com/sitemap.xml",
+      "source_name": "https://example.com/sitemap.xml",
+      "adapter_id": "web",
+      "collected_at": "2026-10-17T02:24:33+00:00",
+      "scope_id": "f40368133d30",
+      "status": "UNVERIFIED",
+      "verification_reason": "Nilai diamati langsung pada respons sumber; bukan validasi kepemilikan/identitas.",
+      "confidence_basis": "Observasi deterministik pada waktu pengambilan.",
+      "digest": "76240853526e6a2ad1ddfd1e4c717921de6ca307ce3872a8b0b20f1345657731",
+      "error_code": null,
+      "raw": {
+        "headers": {
+          "content-type": "text/html; charset=utf-8",
+          "server": "cloudflare"
+        },
+        "status": 404
+      }
+    }
+  ],
+  "narrative": null,
+  "summary_only": false
+}

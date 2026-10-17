@@ -1,0 +1,6 @@
+Target: osintcli-no-account-20261017-7fe93c
+Scope: username
+Depth: 1 / Ctrl+C: cancel
+[1/1] username: PARTIAL / 3 new / 12.6s
+CASE_ID=8342babdf943
+STATE=PARTIAL

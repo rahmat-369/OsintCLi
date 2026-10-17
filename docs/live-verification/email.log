@@ -1,0 +1,6 @@
+Target: test@example.com
+Scope: email
+Depth: 1 / Ctrl+C: cancel
+[1/1] email: DONE / 5 new / 28.7s
+CASE_ID=c58131ae78b1
+STATE=DONE

@@ -32,7 +32,7 @@ def clean(value):
     return "".join(c for c in text if c in "\n\t" or (ord(c) >= 32 and ord(c) != 127 and c not in "\u202a\u202b\u202c\u202d\u202e\u2066\u2067\u2068\u2069"))
 
 def private_dir(path):
-    path = Path(path).expanduser()
+    path = Path(path).expanduser().resolve()
     path.mkdir(parents=True, exist_ok=True, mode=0o700)
     path.chmod(0o700)
     return path
@@ -56,12 +56,15 @@ def write_atomic(path, text):
         tmp.write_text(text, encoding="utf-8")
 
 DEFAULTS = {
+    "fusion_mode": "standard", "fusion_max_nodes": 12, "animation": "on",
     "timeout_seconds": 15, "retries": 1, "max_workers": 3,
     "request_interval": 0.8, "max_file_mb": 25,
     "provider": "nexray_http", "endpoint": "https://api.nexray.eu.cc/ai/claude",
     "method": "GET", "input_parameter": "text", "response_text_path": "result",
     "success_path": "status", "max_url_length": 1800, "ai_timeout_seconds": 25,
     "custom_instructions": "Tulis Bahasa Indonesia yang jelas, ringkas, dan netral.",
+    "http_transport": "direct",
+    "proxy_allowed_hosts": "dns.google,rdap.org,rdap.verisign.com,rdap.publicinterestregistry.org,rdap.arin.net,rdap.apnic.net,rdap.db.ripe.net,rdap.lacnic.net,rdap.afrinic.net,crt.sh,www.instagram.com,instagram.com,www.tiktok.com,tiktok.com,linktr.ee,api.github.com,github.com,www.github.com,gitlab.com,www.reddit.com",
 }
 
 class Config:
@@ -82,16 +85,31 @@ class Config:
     def __getitem__(self, key): return self.values[key]
 
     def validate(self):
-        for key, low, high in [("timeout_seconds",1,60),("retries",0,3),("max_workers",1,4),("request_interval",0.2,10),("max_file_mb",1,100),("max_url_length",128,8000),("ai_timeout_seconds",1,60)]:
+        for key, low, high in [("fusion_max_nodes",1,30),("timeout_seconds",1,60),("retries",0,3),("max_workers",1,4),("request_interval",0.2,10),("max_file_mb",1,100),("max_url_length",128,8000),("ai_timeout_seconds",1,60)]:
             value = self.values[key]
             if not isinstance(value, (float,int)) or not low <= value <= high:
                 raise AppError("CONFIG", f"{key} harus {low}..{high}.")
-        for key in ("retries", "max_workers", "max_url_length"):
+        for key in ("retries", "max_workers", "max_url_length", "fusion_max_nodes"):
             if not isinstance(self.values[key], int): raise AppError("CONFIG", f"{key} harus integer.")
+        if self.values["fusion_mode"] not in ("quick","standard","deep") or self.values["animation"] not in ("on","off"):
+            raise AppError("CONFIG", "fusion_mode: quick/standard/deep; animation: on/off.")
         if self.values["method"] not in ("GET", "POST"): raise AppError("CONFIG", "Method harus GET atau POST.")
         for key in ("endpoint", "input_parameter", "response_text_path", "success_path", "custom_instructions"):
             if not isinstance(self.values[key], str): raise AppError("CONFIG", f"{key} harus teks.")
         if len(self.values["custom_instructions"]) > 4000: raise AppError("CONFIG", "Instruksi maksimal 4000 karakter.")
+        if self.values["http_transport"] not in ("direct", "proxy"):
+            raise AppError("CONFIG", "http_transport harus direct atau proxy.")
+        hosts=self.values["proxy_allowed_hosts"]
+        if not isinstance(hosts,str) or len(hosts)>4000:
+            raise AppError("CONFIG", "proxy_allowed_hosts harus daftar hostname dipisahkan koma.")
+        for host in hosts.split(","):
+            host=host.strip()
+            if not host or domain(host)!=host:
+                raise AppError("CONFIG", "Host proxy harus domain lowercase tanpa wildcard/port.")
+            try:
+                ipaddress.ip_address(host)
+            except ValueError:continue
+            raise AppError("CONFIG", "IP literal tidak diizinkan di allowlist proxy.")
         p = urlsplit(self.values["endpoint"])
         if p.scheme != "https" or not p.hostname or p.username or p.password or p.query or p.fragment:
             raise AppError("CONFIG", "Endpoint harus HTTPS tanpa kredensial, query, atau fragment.")
@@ -136,11 +154,19 @@ def target(value, kind="auto"):
     if not value or len(value)>2048 or any(ord(c)<32 for c in value): raise AppError("TARGET", "Target kosong/tidak valid.")
     if kind == "auto":
         if Path(value).expanduser().is_file(): kind = "metadata"
-        elif value.startswith(("https://","http://")): kind = "domain"
+        elif value.startswith(("https://","http://")): kind = "profile"
+        elif value.startswith("+"): kind = "phone"
         elif "@" in value and not value.startswith("@"): kind = "email"
         else:
             try: ipaddress.ip_address(value); kind = "ip"
             except ValueError: kind = "domain" if "." in value and not value.startswith("@") else "username"
+    if kind == "phone":
+        number=re.sub(r"[ ()-]", "", value)
+        if not re.fullmatch(r"\+[1-9][0-9]{6,14}",number):raise AppError("TARGET","Gunakan nomor internasional, misalnya +62..., 7-15 digit.")
+        return kind,number
+    if kind == "profile":
+        from .fusion import normalize_url
+        return kind,normalize_url(value)
     if kind == "metadata":
         p=Path(value).expanduser().resolve()
         if not p.is_file(): raise AppError("FILE", "File lokal tidak ditemukan.")

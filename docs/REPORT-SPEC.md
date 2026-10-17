@@ -1,11 +1,11 @@
-# Report contract
+# Report specification / V2
 
-A4 portrait, font DejaVu Sans embedded, Arabic reshaping + bidi, wrapped text/URL, repeat table headings, clickable public source links, page numbers, dataset SHA-256, UTC generation time, case ID and unique report ID.
+All formats share one snapshot: case, job status, evidence, append-only reviews, latest relationship decisions, computed counts, methodology and optional reviewed AI narrative. Dataset SHA-256 is over canonical `{evidence, reviews}`; report_id/time are export-specific.
 
-Contents: cover; deterministic summary; scope/methodology; module windows/state; category/status chart; timeline only with multiple dates; source-observation edges; evidence with status/reason/source/time; errors/versions/digest appendix; optional human-reviewed AI prose.
+PDF: cover, computed summary, methodology/scope, status/category charts, up to six relationship edges in a vector diagram, complete relationship list, grouped profile metadata, evidence register and review notes, limitations, digest. DOCX: editable equivalents of the summary, tables, relationship list, profile metadata/register, source gaps and digest. DOCX does not include the PDF vector chart. No live video or remote avatar assets are embedded.
 
-Charts draw from the same snapshot as counts. JSON stores complete normalized + raw data; CSV neutralizes formula prefixes, HTML escapes source text and carries a restrictive CSP. PNG companion shares counts and generation time. Report is an observation record, not proof of private identity.
+JSON preserves raw adapter payloads and all review decisions. CSV flattens source evidence with formula-safe cells (review history is in JSON). HTML is an offline escaped view with a restrictive CSP. PNG is the evidence-category chart. Summary option limits the evidence register to 15 records; relationship list and JSON/CSV remain complete.
 
-A zero-record case explicitly says no evidence; metadata-only case never invents domain results. Summary PDF shows at most 15 records; JSON/CSV remain complete. Long values are split into bounded table sections so a single evidence value cannot overflow a page. ReportLab vector chart avoids a mandatory Matplotlib dependency on Android.
+A CANDIDATE is not a person attribution. VERIFIED means the source observation matched, not identity verified. A phone-format record does not establish validity, ownership or WhatsApp registration. Errors remain part of the snapshot.
 
-UTF-8 is preserved in JSON/CSV/HTML. The embedded font covers Latin/Arabic; full CJK/emoji PDF coverage is not claimed. External viewers and Android physical devices require a separate acceptance test.
+Default output: `~/.local/share/osintcli/reports/<case_id>/`. In menu, Enter or `lokal` uses this path, `android` writes to Android Download after storage permission, another string is a custom directory. On a VPS, Android storage is on the client and needs an SCP download.

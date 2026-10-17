@@ -1,0 +1,123 @@
+{
+  "schema_version": 1,
+  "report_id": "21ab6f6276a24dda",
+  "generator": "OsintCLI 1.0.1",
+  "generated_at": "2026-10-17T02:29:45+00:00",
+  "dataset_digest": "ff0d2f6e312a4b18a0f0e0a36950d7bf384037936c33583e3df41005a4e933b7",
+  "case": {
+    "id": "dfd5a38a17f6",
+    "target": "octocat",
+    "kind": "username",
+    "created_at": "2026-10-17T02:29:21+00:00",
+    "state": "DONE",
+    "scope": [
+      "sherlock"
+    ]
+  },
+  "counts": {
+    "total": 3,
+    "by_category": {
+      "profile": 2,
+      "profile_check": 1
+    },
+    "by_status": {
+      "CANDIDATE": 2,
+      "UNVERIFIED": 1
+    }
+  },
+  "jobs": [
+    {
+      "id": "8e8d9a656b7645eea250aa84685fcfe4",
+      "case_id": "dfd5a38a17f6",
+      "adapter": "sherlock",
+      "state": "DONE",
+      "started_at": "2026-10-17T02:29:21+00:00",
+      "ended_at": "2026-10-17T02:29:45+00:00",
+      "error_code": null,
+      "message": null,
+      "version": "external / version unverified"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "655d7c7a097e4240",
+      "case_id": "dfd5a38a17f6",
+      "entity_type": "profile",
+      "normalized_value": "https://www.github.com/octocat",
+      "title": "GitHub",
+      "source_url": "https://www.github.com/octocat",
+      "source_name": "https://www.github.com/octocat",
+      "adapter_id": "sherlock",
+      "collected_at": "2026-10-17T02:29:45+00:00",
+      "scope_id": "dfd5a38a17f6",
+      "status": "CANDIDATE",
+      "verification_reason": "Sherlock melaporkan Claimed; tinjauan manual diperlukan, bukan bukti identitas.",
+      "confidence_basis": "Observasi deterministik pada waktu pengambilan.",
+      "digest": "c12495814813c746af5f12bb54483f5fa4d8ac6d0c44a38b68067c38d9ec2b63",
+      "error_code": null,
+      "raw": {
+        "exists": "Claimed",
+        "http_status": "200",
+        "name": "GitHub",
+        "response_time_s": "16.56681624400005",
+        "url_main": "https://www.github.com/",
+        "url_user": "https://www.github.com/octocat",
+        "username": "octocat"
+      }
+    },
+    {
+      "id": "763ee5fd491b466a",
+      "case_id": "dfd5a38a17f6",
+      "entity_type": "profile",
+      "normalized_value": "https://www.reddit.com/user/octocat",
+      "title": "Reddit",
+      "source_url": "https://www.reddit.com/user/octocat",
+      "source_name": "https://www.reddit.com/user/octocat",
+      "adapter_id": "sherlock",
+      "collected_at": "2026-10-17T02:29:45+00:00",
+      "scope_id": "dfd5a38a17f6",
+      "status": "CANDIDATE",
+      "verification_reason": "Sherlock melaporkan Claimed; tinjauan manual diperlukan, bukan bukti identitas.",
+      "confidence_basis": "Observasi deterministik pada waktu pengambilan.",
+      "digest": "23e5b703d141e4f217bac0c9476666ca7cbd217070b84359ca97d079cdc37fc0",
+      "error_code": null,
+      "raw": {
+        "exists": "Claimed",
+        "http_status": "200",
+        "name": "Reddit",
+        "response_time_s": "11.03126161199998",
+        "url_main": "https://www.reddit.com/",
+        "url_user": "https://www.reddit.com/user/octocat",
+        "username": "octocat"
+      }
+    },
+    {
+      "id": "ca2acf72f9284a2e",
+      "case_id": "dfd5a38a17f6",
+      "entity_type": "profile_check",
+      "normalized_value": "Tool melaporkan Available pada waktu pemeriksaan.",
+      "title": "GitLab",
+      "source_url": "https://gitlab.com/octocat",
+      "source_name": "https://gitlab.com/octocat",
+      "adapter_id": "sherlock",
+      "collected_at": "2026-10-17T02:29:45+00:00",
+      "scope_id": "dfd5a38a17f6",
+      "status": "UNVERIFIED",
+      "verification_reason": "Hasil negatif tool belum diverifikasi; bukan bukti akun tidak pernah ada.",
+      "confidence_basis": "Observasi deterministik pada waktu pengambilan.",
+      "digest": "8b3fdebdd16fc4cba60357acff1e2d23d62520fb4a00114f90f0dade5ccd0be8",
+      "error_code": null,
+      "raw": {
+        "exists": "Available",
+        "http_status": "200",
+        "name": "GitLab",
+        "response_time_s": "6.52697225899999",
+        "url_main": "https://gitlab.com/",
+        "url_user": "https://gitlab.com/octocat",
+        "username": "octocat"
+      }
+    }
+  ],
+  "narrative": null,
+  "summary_only": false
+}

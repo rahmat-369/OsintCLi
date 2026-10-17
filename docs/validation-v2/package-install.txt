@@ -1,0 +1,2 @@
+Linux Python 3.12. Installer scripts/install-linux.sh completed in isolated venv.
+Installed entry point tested from /tmp: version 2.0.0; demo and PDF/DOCX/JSON/CSV/HTML/PNG exports exited 0.

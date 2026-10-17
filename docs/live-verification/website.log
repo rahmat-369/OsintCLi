@@ -1,0 +1,6 @@
+Target: example.com
+Scope: web
+Depth: 1 / Ctrl+C: cancel
+[1/1] web: DONE / 3 new / 24.3s
+CASE_ID=f40368133d30
+STATE=DONE

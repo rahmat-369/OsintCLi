@@ -4,7 +4,7 @@ command -v pkg >/dev/null || { echo 'Script ini untuk Termux. Linux: bash script
 project_dir="$(CDPATH='' cd -- "$(dirname -- "$0")/.." && pwd)"
 pkg install -y python git
 if [[ "${1:-}" != '--core-only' ]]; then
-  pkg install -y clang make pkg-config libjpeg-turbo zlib freetype libpng
+  pkg install -y clang make pkg-config libjpeg-turbo zlib freetype libpng libxml2 libxslt
 fi
 # Termux owns its pip; do not upgrade system pip or ask for root.
 python -c 'import sys; assert sys.version_info >= (3,11), "Update Python Termux ke 3.11+"'

@@ -12,11 +12,11 @@ import time
 from .core import AppError
 from .adapters import item
 
-PINS={"sherlock":"e40a45ec2a074b90703b3b4b842c8a3adbd6ada3","maigret":"eaf820666d15bfd545129f3223e2261c27191e74","exiftool":"2200871d9cef988051d2a99d67df3bda6cbb30a8"}
+PINS={"user-scanner":"b85d470b48f7fb9d5ccff85080a882bf70049ed7","sherlock":"e40a45ec2a074b90703b3b4b842c8a3adbd6ada3","maigret":"eaf820666d15bfd545129f3223e2261c27191e74","exiftool":"2200871d9cef988051d2a99d67df3bda6cbb30a8"}
 
 def executable(name,config):
     own=config.data/"tools"/name/"bin"/name
-    if own.is_file() and os.access(own,os.X_OK):return str(own)
+    if own.is_file() and os.access(own,os.X_OK):return str(own.resolve())
     return shutil.which(name)
 
 def parse_sherlock(text):
@@ -57,7 +57,12 @@ def run_process(command,cwd,stop,timeout=100):
     for key in list(env):
         if key.startswith(("NEXRAY_","OPENAI_","ANTHROPIC_")):env.pop(key)
     with tempfile.TemporaryFile() as output:
-        p=subprocess.Popen(command,cwd=cwd,stdin=subprocess.DEVNULL,stdout=output,stderr=subprocess.STDOUT,env=env,start_new_session=True)
+        try:
+            p=subprocess.Popen(command,cwd=cwd,stdin=subprocess.DEVNULL,stdout=output,stderr=subprocess.STDOUT,env=env,start_new_session=True)
+        except FileNotFoundError as error:
+            raise AppError("TOOL_LAUNCH","Executable atau interpreter tool hilang; buat ulang virtual environment lalu ulangi install-tools.sh.") from error
+        except PermissionError as error:
+            raise AppError("TOOL_PERMISSION","Tool tidak dapat dieksekusi; periksa izin instalasi.") from error
         try:
             start=time.monotonic()
             while p.poll() is None:
@@ -91,6 +96,13 @@ def external(ctx,name):
                 if key.endswith(":Error"):raise AppError("EXIFTOOL",str(value))
                 yield item("exif",value,"local:ExifTool",title=key,reason="Metadata lokal bisa sensitif/dimodifikasi; tidak membuktikan identitas.")
             return
+        if name=="user-scanner":
+            result=work/"result.json"
+            args=[command,"-u",ctx.value,"-m","github,tiktok","--all","--no-nsfw","-C","2","-t",str(max(30,ctx.config["timeout_seconds"])),"-f","json","-o",str(result)]
+            run_process(args,d,ctx.stop)
+            if not result.is_file() or result.stat().st_size>2_000_000:raise AppError("TOOL_OUTPUT","User Scanner tidak menghasilkan JSON yang valid.")
+            yield from parse_user_scanner(result.read_text())
+            return
         if name=="sherlock":
             args=[command,ctx.value,"--csv","--folderoutput",str(work),"--timeout","12","--no-color","--local"]
             for site in ("GitHub","GitLab","Reddit"):args += ["--site",site]
@@ -109,3 +121,29 @@ def external(ctx,name):
             for record in parser(p.read_text(encoding="utf-8")):
                 count+=1;yield record
         if count==0:yield item("source_observation","Tool tidak melaporkan kandidat. Hasil kosong tidak membuktikan akun tidak ada; blokir atau galat sumber masih mungkin.","local:"+name,status="UNVERIFIED")
+
+
+def parse_user_scanner(text):
+    from .adapters import failed
+    from .fusion import relationship, canonical_link
+    try:data=json.loads(text)
+    except ValueError:raise AppError("UPSTREAM_SCHEMA","JSON User Scanner tidak valid.")
+    if isinstance(data,dict):data=data.get("results")
+    if not isinstance(data,list):raise AppError("UPSTREAM_SCHEMA","User Scanner harus menghasilkan daftar hasil.")
+    for r in data:
+        if not isinstance(r,dict) or r.get("status") not in ("Found","Not Found","Error","Skipped"):
+            raise AppError("UPSTREAM_SCHEMA","Skema status User Scanner berubah.")
+        url=r.get("url") or "local:user-scanner";site=str(r.get("site_name") or "User Scanner")
+        if r["status"]=="Found":
+            extra=r.get("extra") or {}
+            yield item("profile",extra,url,title=site,status="CANDIDATE",raw=r,reason="User Scanner melaporkan Found; metadata adalah klaim sumber, bukan bukti kepemilikan akun.")
+            for key,value in extra.items():
+                if isinstance(value,str) and value.startswith(("https://","http://")) and not any(x in key for x in ("avatar","image","photo")):
+                    try:child=canonical_link(value)
+                    except AppError:continue
+                    yield relationship(url,child,url,1)
+        elif r["status"]=="Not Found":
+            yield item("profile_check",url,url,title=site,status="UNVERIFIED",raw=r,reason="User Scanner melaporkan Not Found; bukan bukti akun tidak pernah ada.")
+        else:
+            rec=failed(url,AppError("UPSTREAM_CHECK",site+": "+str(r.get("reason") or r["status"])))
+            rec["raw"]=r;yield rec

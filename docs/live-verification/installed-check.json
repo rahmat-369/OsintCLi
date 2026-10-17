@@ -1,0 +1,10 @@
+{
+  "installed_version": "1.0.1",
+  "working_directory": "outside source tree",
+  "scan_exit_code": 0,
+  "report_exit_code": 0,
+  "case_id": "cfd5980a366e",
+  "evidence_count": 9,
+  "generator": "OsintCLI 1.0.1",
+  "verdict": "PASS"
+}

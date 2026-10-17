@@ -1,0 +1,147 @@
+[
+  {
+    "label": "fusion-positive",
+    "exit_code": 2,
+    "completed_at": "2026-10-17T13:04:27.474685+00:00",
+    "case_id": "72a97de8115c",
+    "state": "PARTIAL",
+    "records": 11,
+    "profiles": [
+      {
+        "title": "github / @octocat",
+        "source": "https://api.github.com/users/octocat"
+      },
+      {
+        "title": "instagram / @octocat",
+        "source": "https://www.instagram.com/octocat/"
+      }
+    ],
+    "relationships": 4,
+    "errors": [
+      {
+        "source": "https://www.tiktok.com/@octocat",
+        "code": "HTTP_400"
+      },
+      {
+        "source": "https://www.reddit.com/user/octocat/",
+        "code": "HTTP_403"
+      }
+    ],
+    "functional_checks": {
+      "case_saved": true,
+      "github_positive": true,
+      "negative_not_candidate": null,
+      "phone_only_format": null
+    },
+    "export_exit": 0
+  },
+  {
+    "label": "fusion-negative",
+    "exit_code": 2,
+    "completed_at": "2026-10-17T13:05:04.516010+00:00",
+    "case_id": "895a8fafb639",
+    "state": "PARTIAL",
+    "records": 6,
+    "profiles": [],
+    "relationships": 0,
+    "errors": [
+      {
+        "source": "https://www.instagram.com/osintcliqz9x726/",
+        "code": "PROFILE_SCHEMA"
+      },
+      {
+        "source": "https://www.tiktok.com/@osintcliqz9x726",
+        "code": "HTTP_503"
+      },
+      {
+        "source": "https://www.reddit.com/user/osintcliqz9x726/",
+        "code": "HTTP_403"
+      }
+    ],
+    "functional_checks": {
+      "case_saved": true,
+      "github_positive": null,
+      "negative_not_candidate": true,
+      "phone_only_format": null
+    },
+    "export_exit": 0
+  },
+  {
+    "label": "profile-pivot",
+    "exit_code": 2,
+    "completed_at": "2026-10-17T13:05:32.978359+00:00",
+    "case_id": "05ca66973f6a",
+    "state": "PARTIAL",
+    "records": 10,
+    "profiles": [
+      {
+        "title": "github / @octocat",
+        "source": "https://api.github.com/users/octocat"
+      },
+      {
+        "title": "instagram / @github",
+        "source": "https://www.instagram.com/github/"
+      }
+    ],
+    "relationships": 4,
+    "errors": [
+      {
+        "source": "https://www.tiktok.com/@github",
+        "code": "HTTP_503"
+      }
+    ],
+    "functional_checks": {
+      "case_saved": true,
+      "github_positive": true,
+      "negative_not_candidate": null,
+      "phone_only_format": null
+    },
+    "export_exit": 0
+  },
+  {
+    "label": "phone-format",
+    "exit_code": 0,
+    "completed_at": "2026-10-17T13:05:33.441169+00:00",
+    "case_id": "8a1320b3fff2",
+    "state": "DONE",
+    "records": 1,
+    "profiles": [],
+    "relationships": 0,
+    "errors": [],
+    "functional_checks": {
+      "case_saved": true,
+      "github_positive": null,
+      "negative_not_candidate": null,
+      "phone_only_format": true
+    },
+    "export_exit": 0
+  },
+  {
+    "label": "user-scanner",
+    "exit_code": 2,
+    "completed_at": "2026-10-17T13:07:57.751200+00:00",
+    "case_id": "150d7f1f0ecf",
+    "state": "PARTIAL",
+    "records": 3,
+    "profiles": [
+      {
+        "title": "Github",
+        "source": "https://github.com/octocat"
+      }
+    ],
+    "relationships": 1,
+    "errors": [
+      {
+        "source": "https://www.tiktok.com/@octocat",
+        "code": "UPSTREAM_CHECK"
+      }
+    ],
+    "functional_checks": {
+      "case_saved": true,
+      "github_positive": true,
+      "negative_not_candidate": null,
+      "phone_only_format": null
+    },
+    "export_exit": 0
+  }
+]

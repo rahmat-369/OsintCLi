@@ -30,7 +30,7 @@ class Base(unittest.TestCase):
     def ctx(self,kind='domain',value='example.com',client=None):return Context(value,kind,self.config,client or Mock(),threading.Event())
 
 class Validation(Base):
-    def test_normalize(self):self.assertEqual(target('HTTPS://EXAMPLE.COM'.lower()),('domain','example.com'))
+    def test_normalize(self):self.assertEqual(target('HTTPS://EXAMPLE.COM'.lower()),('profile','https://example.com/'))
     def test_idna(self):self.assertEqual(target('bücher.de')[1],'xn--bcher-kva.de')
     def test_email_preserves_local_case(self):self.assertEqual(target('A@EXAMPLE.COM'),('email','A@example.com'))
     def test_username(self):self.assertEqual(target('@r_hmt'),('username','r_hmt'))
@@ -66,7 +66,7 @@ class Validation(Base):
 
 class Database(Base):
     def test_bootstrap(self):
-        with self.db.connect() as c:self.assertEqual(c.execute('PRAGMA user_version').fetchone()[0],1)
+        with self.db.connect() as c:self.assertEqual(c.execute('PRAGMA user_version').fetchone()[0],2)
         self.assertEqual(self.db.path.stat().st_mode&0o077,0)
     def test_dedup_and_raw(self):
         cid=self.case();r=item('dns','example.com','https://example.com',raw={'ttl':42})
@@ -275,7 +275,7 @@ class Reports(Base):
     def test_digest_matches_export(self):
         from osintcli.core import digest
         cid=demo(self.config,3);data=snapshot(self.db,cid)
-        self.assertEqual(data['dataset_digest'],digest(data['evidence']))
+        self.assertEqual(data['dataset_digest'],digest({'evidence':data['evidence'],'reviews':data['reviews']}))
 
 class Terminal(Base):
     def test_widths(self):

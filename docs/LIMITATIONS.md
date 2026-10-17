@@ -1,15 +1,14 @@
-# Known limitations — release 1.0.0
+# Known limitations / V2
 
-1. No physical Android/Termux installation test is available. Linux Python 3.12.14 fresh install is tested. Treat Android as an implementation target pending device acceptance, not a certified platform.
-2. Nexray returned HTML “Site Unavailable” in the release smoke probe. Core reports work without AI. The adapter cannot repair an unavailable external provider.
-3. Direct system DNS is restricted in this build environment. Built-in live collection therefore records DNS/NETWORK failures here. Separate HTTPS transport probes reached DNS/RDAP/CT sources; those probes are not claimed as end-to-end built-in live success. Offline contract tests cover parsing, recovery and bounded failures.
-4. Sherlock and Maigret may disagree. Their results are candidates, not identities. Site blocks, exclusions, mirrors and soft-404 pages reduce accuracy. No brute-force expansion, bypass, full-page profile dossier, or automatic real-person correlation.
-5. Third-party engines are optional and can be heavy on ARM/Termux. Maigret includes native dependencies; failure does not prevent the built-in engine, database, or report export.
-6. Public service availability/ToS/rate limits can change. Historical CT and RDAP registration country are not current host availability or precise geolocation.
-7. Email validates supported syntax and public domain records, not mailbox existence; it never sends email, probes SMTP, or tests accounts.
-8. All data is local but not encrypted. Delete is logical deletion, not guaranteed forensic erasure. Copies exported outside canonical report folders remain after case deletion.
-9. HTTP fetching is intentionally bounded to standard ports, public IPs, and selected paths. Core network ignores proxy environment variables to retain IP pinning. Third-party tools have their own network stacks.
-10. AI numeric/injection checks are conservative guards, not factual verification. Human review remains required. A user can approve incorrect prose; computed statistics never depend on that prose.
-11. PDF fonts support Latin/Arabic; CJK and emoji may need an additional font. No arbitrary “all languages” claim.
-12. Recon-ng, SpiderFoot, BBOT, and theHarvester were audited as references; they are not silently installed or included in the runtime. theHarvester audited HEAD requires Python 3.14. No upstream source code is vendored.
-13. Installed dependency locks describe one Linux resolver result; they are not universal ABI locks for Android. Read security audit status before claiming dependency safety.
+- This is public-source collection, not exhaustive identity resolution. Same usernames, avatars and display names are not sufficient to merge people.
+- Instagram/TikTok/Reddit can block requests or omit public metadata. Login walls/private profiles/challenges are failures, not verified absence. Some APIs have rate limits. Public metadata may change or be spoofed.
+- Five native platforms are selected; thousands of upstream modules are not enabled. User Scanner CLI currently selects GitHub/TikTok; Sherlock/Maigret select GitHub/GitLab/Reddit. External tools may have different detection quality from native parsers.
+- A website can link to someone else's profile. PUBLIC_LINK / PLATFORM_LINK do not prove common ownership. Review is an operator judgement, not a new source fact.
+- Deep mode traverses at most two public-link levels; node budget and response caps truncate collection explicitly. No general web-search index is included. Email input checks syntax/DNS; phone input normalizes format only. Contact identifiers may be recorded when published in observed pages.
+- No account-recovery or signup probing, no private-session scraping, no automatic identifier sweeps, no camera discovery. Media URLs are metadata, not fetched evidence.
+- DOCX requires python-docx/lxml; Termux compilation may need native packages. Actual Android hardware has not been tested. Linux PTY widths and installer/source tests are documented in TEST-V2.md.
+- SQLite v2 migration creates a backup; older OsintCLI versions cannot open v2 directly. Report files copied elsewhere are not removed when deleting a case.
+- Resume recollects a failed module within the original Fusion scope; the per-URL traversal queue is not a persistent incremental queue.
+- Proxy mode requires explicit approved hostnames; a newly discovered host outside the list produces PROXY_SCOPE. Direct mode validates public IPs itself. External subprocess transport differs from the native client.
+- AI remains optional and externally hosted. A prior provider probe returned HTML Site Unavailable; availability is not guaranteed. Reports do not require AI.
+- Git history can retain a deleted credential file. Removing it from the latest tree does not revoke the credential or erase past commits.

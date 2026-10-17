@@ -1,28 +1,25 @@
-# Arsitektur dan kontrak
+# Architecture / V2
 
-`cli/ui -> engine -> registry -> adapter -> normalized evidence/raw payload -> SQLite -> reports/optional AI`.
+CLI numbered menu and commands → target validation → selected engine → bounded HTTP/process execution → SQLite → review → shared report snapshot → PDF/DOCX/JSON/CSV/HTML/PNG.
 
-- `core.py`: config TOML, validasi target, control-character sanitization, atomic write.
-- `net.py`: koneksi HTTP(S) ke IP hasil resolusi yang telah divalidasi, TLS hostname validation, no proxy inheritance, redirect validation, per-host pacing, retry bounded dan circuit breaker.
-- `adapters.py`: DNS/CT/RDAP/ASN/HTTP/TLS/email/username/local metadata. Adapter adalah generator observation; satu sumber gagal tidak menghapus evidence sumber lain.
-- `external.py`: Sherlock/Maigret CSV dan ExifTool JSON, `Popen` tanpa shell, timeout/output cap dan process-group cancellation. Maigret source mirrors dapat menambah GitHub Gist ke tiga situs dasar; tidak ada recursive account traversal.
-- `db.py`: schema version 1, foreign keys, WAL, startup migration. Migration berikutnya wajib backup dan transaksi. Raw payload disimpan terpisah; digest dataset mencakup data normalized+raw.
-- `engine.py`: scope depth 1, maksimum 4 worker (default 3), process lock untuk scan/recovery. State: QUEUED, RUNNING, DONE, PARTIAL, FAILED (job), CANCELLED, INTERRUPTED. Resume melanjutkan adapter gagal/parsial; tidak mengulang yang DONE.
-- `ai.py`: preview, consent, limited subset, no raw file upload; draft disimpan dan review terikat digest dataset. AI tidak mengubah evidence/statistik.
-- `reports.py`: satu snapshot data untuk lima format. File diganti secara atomik; jika satu format gagal, evidence tetap ada dan format sebelumnya tetap dapat dipakai.
+## Fusion
 
-## Schema
+`fusion.py` contains public profile parsers and a breadth-first queue. Quick/standard/deep select depth 0/1/2; max nodes defaults to 12 (1–30). The visited set canonicalizes supported social profile URLs. Only exact public API/HTML profile identifiers become candidates. Challenge, private or unexpected payloads become source errors. A query URL is not automatically followed.
 
-`cases(id,target,kind,created_at,state,scope)`; `jobs(id,case_id,adapter,state,started_at,ended_at,error_code,message,version)`; `evidence(id,case_id,entity_type,normalized_value,title,source_url,source_name,adapter_id,collected_at,scope_id,status,verification_reason,confidence_basis,digest,error_code)`; `raw_evidence(evidence_id,raw_json)`; `narratives(id,case_id,created_at,provider,instructions,prompt_digest,text,reviewed,dataset_digest)`.
+GitHub social_accounts and website/blog fields are explicit pivots. Website pages expose profile/contact/rel=me links; known hubs can expose outbound pages. Same-site article/navigation crawling is excluded. Contacts are recorded, never messaged or used for registration/recovery. Metadata is one grouped record per profile. Assets such as avatars are URL fields only, not downloaded.
 
-Deduplikasi menggunakan isi normalized + provenance + alasan/status; sumber berbeda tidak digabung menjadi satu tanpa jejak. Raw payload bukan credential vault. Aplikasi tidak mengambil contact vCard dari RDAP atau mengirim cookie/token pengguna.
+## Persistence
 
-## Threat model
+Schema v2 adds append-only `evidence_reviews`, with foreign keys to evidence. Existing v1 databases are backed up once before migration. Evidence remains immutable; accepted/rejected/pending reviews do not rewrite collection status. The dataset digest covers evidence and review history; a changed review invalidates old AI narrative approval. JSON exports use schema_version 2.
 
-Untrusted: input target, URL/redirect, HTTP payload, metadata file, output tool, AI response. Mitigasi: target allowlist grammar, IP global check termasuk multicast/reserved, DNS pinning, HTTPS validation, ukuran respons/file, subprocess argv, timeout, escaping HTML/PDF/CSV, terminal control stripping. Custom provider hanya HTTPS; rahasia header di file 0600.
+Relationships live as typed evidence with from/to/relation/depth, source URL and collected_at. `graph` returns these with the latest operator review. PUBLIC_LINK and PLATFORM_LINK are observations of links, not ownership claims. Profile candidates sharing a username are not silently merged.
 
-Batas: third-party tools mempunyai network stack sendiri dan tidak mewarisi guard HTTP OsintCLI. Scope dipersempit ke database/situs upstream yang diaudit; tidak ada kemampuan bypass/cookie yang diaktifkan. Parser metadata native/third-party tetap memerlukan pembaruan keamanan. Tidak mengklaim sandbox process atau perlindungan terhadap semua file berbahaya. System DNS lookup mengikuti timeout resolver OS. Tidak ada bypass jaringan, CAPTCHA, login, brute force, exploit, atau pemindaian port.
+## Recovery and transport
 
-## Perubahan yang disengaja dari PRD
+Process lock, cancellation, job states, failures, retries and per-host pacing remain from v1. Failed/interrupted modules can be resumed; Fusion restores mode and max-node scope from the case. Resume recollects the failed module within that scope, not an exact durable per-URL queue checkpoint. Duplicate identical evidence is ignored.
 
-Grafik menggunakan ReportLab vector dan Pillow, bukan dependensi wajib Matplotlib. Keputusan ini mengurangi build native yang berat di Termux; grafik tetap dihitung deterministik dari snapshot SQLite, dan PNG mencatat data sumber lewat JSON companion. Arsitektur diperpendek menjadi modul Python yang terpisah per tanggung jawab, bukan folder kosong. Diagram hubungan hanya sumber → observasi ber-ID; advanced identity correlation P2 tidak diimplementasikan. Lisensi upstream tertentu dipakai sebagai referensi, bukan semua repo dijadikan runtime wajib.
+Direct transport pins public IPs and validates redirects/TLS. Explicit proxy mode allows owner-approved HTTPS hostnames, relying on the trusted proxy for routing. External tools manage their own transport and do not inherit OsintCLI host validation; only selected upstream modules run, bounded by process timeout/output size. API credentials are not required for default public sources.
+
+## Upstream boundaries
+
+User Scanner public parsers are adapted under MIT with included attribution. Its optional CLI is pinned, isolated and limited to GitHub/TikTok. Sherlock and Maigret remain optional selected-site subprocesses; ExifTool reads local files. Reference-only repos are documented separately and are not claimed as integrated engines.

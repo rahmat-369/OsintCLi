@@ -1,0 +1,6 @@
+# User Scanner direct dependencies; installed-lock.txt records resolved versions.
+httpx==0.28.1
+socksio==1.0.0
+colorama==0.4.6
+rich==14.2.0
+curl_cffi==0.13.0

@@ -1,0 +1,6 @@
+Target: octocat
+Scope: sherlock
+Depth: 1 / Ctrl+C: cancel
+[1/1] sherlock: DONE / 3 new / 23.7s
+CASE_ID=dfd5a38a17f6
+STATE=DONE

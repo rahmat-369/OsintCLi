@@ -8,6 +8,12 @@ from .db import Store
 from .net import Client
 from .adapters import ADAPTERS, DEFAULT_SCOPE, ALLOWED, failed
 from .external import external, PINS, executable
+from . import __version__
+from .fusion import fusion, phone
+ADAPTERS.update(fusion=fusion, phone=phone)
+DEFAULT_SCOPE.update(username=["fusion"], profile=["fusion"], phone=["phone"])
+ALLOWED["username"].update({"fusion","user-scanner"})
+ALLOWED.update(profile={"fusion"}, phone={"phone"})
 
 @dataclass
 class Context:
@@ -30,7 +36,7 @@ class ProcessLock:
 def scope_for(kind,modules=None):
     names=modules or DEFAULT_SCOPE[kind]
     if not names or any(x not in ALLOWED[kind] for x in names):raise AppError("SCOPE","Modul tidak sesuai jenis target.")
-    if sum(x in names for x in ("username","sherlock","maigret"))>1:raise AppError("SCOPE","Pilih satu engine username untuk menghindari kueri duplikat.")
+    if sum(x in names for x in ("username","sherlock","maigret","fusion","user-scanner"))>1:raise AppError("SCOPE","Pilih satu engine username untuk menghindari kueri duplikat.")
     return list(dict.fromkeys(names))
 
 def run(config,value,kind="auto",modules=None,progress=None,resume=None,client=None):
@@ -41,6 +47,12 @@ def run(config,value,kind="auto",modules=None,progress=None,resume=None,client=N
         kind,value=target(value,kind);names=scope_for(kind,modules)
     with ProcessLock(config):
         db.recover()
+        if resume and "fusion" in names:
+            scopes=[r["raw"] for r in db.evidence(resume,True) if r["entity_type"]=="collection_scope"]
+            if scopes:
+                from copy import copy
+                config=copy(config);config.values=config.values.copy()
+                config.values.update(fusion_mode=scopes[0]["mode"],fusion_max_nodes=scopes[0]["max_pages"])
         cid=resume or db.create(value,kind,names)
         if resume:
             latest={j["adapter"]:j["state"] for j in db.jobs(cid)}
@@ -48,7 +60,7 @@ def run(config,value,kind="auto",modules=None,progress=None,resume=None,client=N
         db.state(cid,"RUNNING")
         ctx=Context(value,kind,config,client or Client(config,stop),stop)
         def work(name):
-            version="builtin-1.0.0"
+            version="builtin-"+__version__
             if name in PINS:
                 manifest=config.data/"tools"/name/"audited-commit.txt"
                 version="pinned:"+manifest.read_text().strip() if manifest.exists() else "external / version unverified"

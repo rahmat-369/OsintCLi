@@ -1,9 +1,10 @@
 # Third-party notices and upstream audit
 
-Audit date: 2026-10-17 WIB. All seven repositories were shallow-cloned into a temporary audit workspace; commits below were read from local Git HEAD. LICENSE/README/CLI exports/package requirements and output schemas were inspected. No upstream implementation files are copied into this release.
+Audit date: 2026-10-17 WIB. All seven repositories were shallow-cloned into a temporary audit workspace; commits below were read from local Git HEAD. LICENSE/README/CLI exports/package requirements and output schemas were inspected. V2 adapts selected public-profile parsing logic from User Scanner; see the attribution below.
 
 | Upstream | Pinned audit commit | License inspected | Integration |
 |---|---|---|---|
+| [kaifcodec/user-scanner](https://github.com/kaifcodec/user-scanner) | `b85d470b48f7fb9d5ccff85080a882bf70049ed7` | MIT, Copyright (c) 2025 Kaif | Adapted Instagram public metadata / TikTok userInfo parsers; optional isolated CLI |
 | [sherlock-project/sherlock](https://github.com/sherlock-project/sherlock) | `e40a45ec2a074b90703b3b4b842c8a3adbd6ada3` | MIT | Optional isolated process, CSV adapter |
 | [soxoj/maigret](https://github.com/soxoj/maigret) | `eaf820666d15bfd545129f3223e2261c27191e74` | MIT | Optional isolated process, CSV adapter |
 | [lanmaster53/recon-ng](https://github.com/lanmaster53/recon-ng) | `32b08fe7b6993ca1f2d8f76ba8f5d23c7f34a11d` | GPL-3.0 | Workspace architecture reference only |
@@ -14,7 +15,7 @@ Audit date: 2026-10-17 WIB. All seven repositories were shallow-cloned into a te
 
 ## Changes and copyright
 
-No files copied, no upstream code modified. Adapters were independently authored against observed public CLI/CSV/JSON contracts. Runtime installs optional tools at audited commit hashes; their package dependencies retain upstream licenses. No rebranding of upstream code as R_HMT work. Recon-ng/SpiderFoot/BBOT/theHarvester are not distributed runtime components. This separation is not a blanket legal opinion about GPL/AGPL combinations; any future source incorporation requires a fresh assessment.
+V2 `osintcli/fusion.py` adapts the public HTML/JSON extraction approach from User Scanner Instagram and TikTok modules (Copyright (c) 2025 Kaif, MIT). Changes: own bounded transport, exact handle checks, JSONDecoder parsing for escaped braces, public GET only, no signup/recovery fallback, bounded graph traversal and provenance. The full license is in `docs/licenses/user-scanner-LICENSE.txt`. CLI adapters for other tools were independently authored against observed public CSV/JSON contracts. Runtime installs optional tools at audited commit hashes; their package dependencies retain upstream licenses. No rebranding of upstream code as R_HMT work. Recon-ng/SpiderFoot/BBOT/theHarvester are not distributed runtime components. This separation is not a blanket legal opinion about GPL/AGPL combinations; any future source incorporation requires a fresh assessment.
 
 Sherlock: Sherlock Project contributors (created by Siddharth Dushantha). Maigret: Alexey “soxoj” and contributors. ExifTool: Phil Harvey and contributors. Recon-ng: Tim Tomes/contributors. SpiderFoot: Steve Micallef/contributors. theHarvester: project contributors. BBOT: Black Lantern Security/contributors. Exact copyright terms remain in included upstream license texts.
 
@@ -22,6 +23,8 @@ Sherlock: Sherlock Project contributors (created by Siddharth Dushantha). Maigre
 
 | Component | Use | License / notes |
 |---|---|---|
+| python-docx | Editable Word reports | MIT |
+| lxml | DOCX XML processing | BSD-style |
 | ReportLab | Deterministic PDF/vector charts | BSD-style, installed dependency |
 | Pillow | Local image metadata, PNG chart, icon conversion | HPND-style PIL license, installed dependency |
 | pypdf | Local PDF metadata/test extraction | BSD-3-Clause |

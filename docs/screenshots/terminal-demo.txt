@@ -1,101 +1,119 @@
-    .-------.
-   /  | | |  \
-  |---|-+-|---|
-   \  | | /==\
-    `-----|  |
-           \==\_
-               \
-OSINTCLI / 1.0.0
-by R_HMT  |  Local-first OSINT
-----------------------------------------
-PUBLIC SOURCES / LOCAL EVIDENCE
-[01] Auto Investigation
+[OK] Database / 1 kasus
+[OK] Engine / Fusion / siap
+[OK] Laporan / PDF + DOCX
+         .-========-.
+       .'   .----.   '.
+      /    /      \    \
+     /    |  .  .  |    \
+    |     |   __   |     |
+     \     \      /     /
+      '._   '----'   _.'
+         '-.______.-'
+   ╔══════════════════════╗
+   ║  O S I N T C L I     ║
+   ╚══════════════════════╝
+OSINTCLI / 2.0.0
+by R_HMT  |  PUBLIC INTELLIGENCE
+Collect · Connect · Review · Report
+────────────────────────────────────────
+INVESTIGATION WORKSPACE
+[01] Auto Investigation / Fusion
 [02] Username Intelligence
 [03] Domain / Website
 [04] IP / Network
 [05] Email Intelligence
 [06] Metadata Forensics
-[07] Evidence & History
+[07] Evidence / Review / History
 [08] AI Narration (optional)
-[09] Generate Report
+[09] Generate Report / PDF / DOCX
 [10] Settings / Modules
+[11] Profile URL / Public Links
+[12] Phone / Public Contact
 [00] Exit
 Pilih nomor
 > 7
-1a6984a52760 / DONE
+7332bec1a704 / DONE
 example.com (OFFLINE FIXTURE)
 Case ID (Enter: terbaru / 0: kembali)
 > 
-1 evidence / 2 resume / 3 hapus / 0
-kembali
+1 evidence / 2 resume / 3 hapus / 4
+hubungan / 5 review / 0 kembali
 > 1
-----------------------------------------
+────────────────────────────────────────
 001 / VERIFIED
 Fixture observasi | demo
+ID: 069e691b7d764d10
 fixture-1.example.com
 Sumber: https://example.com/evidence/1
-2026-10-17T00:02:27+00:00
+2026-10-17T13:04:22+00:00
 Alasan: Data sintetis untuk pengujian;
 bukan hasil pencarian nyata.
-----------------------------------------
+────────────────────────────────────────
 002 / VERIFIED
 Fixture observasi | demo
+ID: 25ff27f0a8284175
 fixture-2.example.com
 Sumber: https://example.com/evidence/2
-2026-10-17T00:02:27+00:00
+2026-10-17T13:04:22+00:00
 Alasan: Data sintetis untuk pengujian;
 bukan hasil pencarian nyata.
-----------------------------------------
+────────────────────────────────────────
 003 / CANDIDATE
 Fixture observasi | demo
+ID: 53cc31710b8948b4
 fixture-0.example.com
 Sumber: https://example.com/evidence/0
-2026-10-17T00:02:27+00:00
+2026-10-17T13:04:22+00:00
 Alasan: Data sintetis untuk pengujian;
 bukan hasil pencarian nyata.
-----------------------------------------
-PUBLIC SOURCES / LOCAL EVIDENCE
-[01] Auto Investigation
+────────────────────────────────────────
+INVESTIGATION WORKSPACE
+[01] Auto Investigation / Fusion
 [02] Username Intelligence
 [03] Domain / Website
 [04] IP / Network
 [05] Email Intelligence
 [06] Metadata Forensics
-[07] Evidence & History
+[07] Evidence / Review / History
 [08] AI Narration (optional)
-[09] Generate Report
+[09] Generate Report / PDF / DOCX
 [10] Settings / Modules
+[11] Profile URL / Public Links
+[12] Phone / Public Contact
 [00] Exit
 Pilih nomor
 > 9
-1a6984a52760 / DONE
+7332bec1a704 / DONE
 example.com (OFFLINE FIXTURE)
 Case ID (Enter: terbaru / 0: kembali)
 > 
-Format: pdf,json,csv,html,png [semua] /
-0 kembali
+Format: pdf,docx,json,csv,html,png
+[semua] / 0 kembali
 > pdf,json
-PDF ringkasan (maks 15 evidence)? [y/N]
+Laporan ringkasan (maks 15 evidence)?
+[y/N]
 > n
-Folder output (Enter: lokal / android /
-0 kembali)
-> /tmp/osintcli-record-8uqn3dpl/out
+Folder output (Enter/lokal: folder
+laporan / android / path / 0 kembali)
+> /tmp/osintcli-record-nh31n9bo/out
 Tersimpan: /tmp/osintcli-record-
-8uqn3dpl/out/osintcli-1a6984a52760.pdf
+nh31n9bo/out/osintcli-7332bec1a704.pdf
 Tersimpan: /tmp/osintcli-record-
-8uqn3dpl/out/osintcli-1a6984a52760.json
-----------------------------------------
-PUBLIC SOURCES / LOCAL EVIDENCE
-[01] Auto Investigation
+nh31n9bo/out/osintcli-7332bec1a704.json
+────────────────────────────────────────
+INVESTIGATION WORKSPACE
+[01] Auto Investigation / Fusion
 [02] Username Intelligence
 [03] Domain / Website
 [04] IP / Network
 [05] Email Intelligence
 [06] Metadata Forensics
-[07] Evidence & History
+[07] Evidence / Review / History
 [08] AI Narration (optional)
-[09] Generate Report
+[09] Generate Report / PDF / DOCX
 [10] Settings / Modules
+[11] Profile URL / Public Links
+[12] Phone / Public Contact
 [00] Exit
 Pilih nomor
 > 0

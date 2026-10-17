@@ -1,0 +1,7 @@
+Target: 1.1.1.1
+Scope: rdap, asn
+Depth: 1 / Ctrl+C: cancel
+[1/2] asn: DONE / 1 new / 3.7s
+[2/2] rdap: DONE / 10 new / 16.4s
+CASE_ID=053d45f58fe2
+STATE=DONE

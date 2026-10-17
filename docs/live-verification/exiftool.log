@@ -1,0 +1,6 @@
+Target: /workspace/scratch/62394965b2c5/live-verification-v101/full/controlled-local-test.jpg
+Scope: exiftool
+Depth: 1 / Ctrl+C: cancel
+[1/1] exiftool: DONE / 24 new / 0.2s
+CASE_ID=3fc63c94cb31
+STATE=DONE

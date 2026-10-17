@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "report_id": "2149597f67a742b3",
+  "generator": "OsintCLI 1.0.1",
+  "generated_at": "2026-10-17T02:27:53+00:00",
+  "dataset_digest": "82bb9af96bf0f0108f69648ef96f8b328062f6b6d86f911f6ba67685e7995ca9",
+  "case": {
+    "id": "8342babdf943",
+    "target": "osintcli-no-account-20261017-7fe93c",
+    "kind": "username",
+    "created_at": "2026-10-17T02:27:40+00:00",
+    "state": "PARTIAL",
+    "scope": [
+      "username"
+    ]
+  },
+  "counts": {
+    "total": 3,
+    "by_category": {
+      "profile_check": 2,
+      "source_error": 1
+    },
+    "by_status": {
+      "UNVERIFIED": 2,
+      "FAILED_SOURCE": 1
+    }
+  },
+  "jobs": [
+    {
+      "id": "088e28d3039f404da351443ecc6d0921",
+      "case_id": "8342babdf943",
+      "adapter": "username",
+      "state": "PARTIAL",
+      "started_at": "2026-10-17T02:27:40+00:00",
+      "ended_at": "2026-10-17T02:27:53+00:00",
+      "error_code": null,
+      "message": null,
+      "version": "builtin-1.0.1"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "b1f8a66ae0e5482b",
+      "case_id": "8342babdf943",
+      "entity_type": "profile_check",
+      "normalized_value": "HTTP 404 pada waktu pemeriksaan",
+      "title": "GitHub",
+      "source_url": "https://api.github.com/users/osintcli-no-account-20261017-7fe93c",
+      "source_name": "https://api.github.com/users/osintcli-no-account-20261017-7fe93c",
+      "adapter_id": "username",
+      "collected_at": "2026-10-17T02:27:45+00:00",
+      "scope_id": "8342babdf943",
+      "status": "UNVERIFIED",
+      "verification_reason": "Tidak tersedia pada endpoint ini saat dicek; bukan bukti akun tidak pernah ada.",
+      "confidence_basis": "Observasi deterministik pada waktu pengambilan.",
+      "digest": "369b39724270c52b3a312ee2418acebb01435dac5809d804e1379e6f696478cd",
+      "error_code": null,
+      "raw": "HTTP 404 pada waktu pemeriksaan"
+    },
+    {
+      "id": "bf7739c5ca614f0e",
+      "case_id": "8342babdf943",
+      "entity_type": "profile_check",
+      "normalized_value": "API GitLab tidak mengembalikan username persis ini.",
+      "title": "GitLab",
+      "source_url": "https://gitlab.com/api/v4/users?username=osintcli-no-account-20261017-7fe93c",
+      "source_name": "https://gitlab.com/api/v4/users?username=osintcli-no-account-20261017-7fe93c",
+      "adapter_id": "username",
+      "collected_at": "2026-10-17T02:27:49+00:00",
+      "scope_id": "8342babdf943",
+      "status": "UNVERIFIED",
+      "verification_reason": "Hasil kosong pada endpoint publik, bukan verifikasi identitas/riwayat akun.",
+      "confidence_basis": "Observasi deterministik pada waktu pengambilan.",
+      "digest": "0444f7ae1f21802c9858fc8d914c7d0c51efd39e99eb90d53731bd701a2c1c31",
+      "error_code": null,
+      "raw": []
+    },
+    {
+      "id": "a7188763a5044a0c",
+      "case_id": "8342babdf943",
+      "entity_type": "source_error",
+      "normalized_value": "Respons 403; hasil tidak pasti.",
+      "title": "Sumber tidak tersedia",
+      "source_url": "https://www.reddit.com/user/osintcli-no-account-20261017-7fe93c/about.json",
+      "source_name": "https://www.reddit.com/user/osintcli-no-account-20261017-7fe93c/about.json",
+      "adapter_id": "username",
+      "collected_at": "2026-10-17T02:27:53+00:00",
+      "scope_id": "8342babdf943",
+      "status": "FAILED_SOURCE",
+      "verification_reason": "Tidak dapat memperoleh bukti; bukan bukti ketiadaan.",
+      "confidence_basis": "Kegagalan akses/parsing sumber.",
+      "digest": "8c8ab7af8928e7e6366b65e5d7936e7167451c50fbd42325a6300034fd291216",
+      "error_code": "HTTP_403",
+      "raw": "Respons 403; hasil tidak pasti."
+    }
+  ],
+  "narrative": null,
+  "summary_only": false
+}

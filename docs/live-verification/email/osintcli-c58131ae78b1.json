@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "report_id": "c07e4975ba554742",
+  "generator": "OsintCLI 1.0.1",
+  "generated_at": "2026-10-17T02:24:09+00:00",
+  "dataset_digest": "3b4883447c3a15f68abd21e0f49592ec785b2c669589d34d9b817bd25d0fe8a6",
+  "case": {
+    "id": "c58131ae78b1",
+    "target": "test@example.com",
+    "kind": "email",
+    "created_at": "2026-10-17T02:23:40+00:00",
+    "state": "DONE",
+    "scope": [
+      "email"
+    ]
+  },
+  "counts": {
+    "total": 5,
+    "by_category": {
+      "email_syntax": 1,
+      "dns": 4
+    },
+    "by_status": {
+      "VERIFIED": 5
+    }
+  },
+  "jobs": [
+    {
+      "id": "b203a8f999bd4b16a33a58d6bb88f676",
+      "case_id": "c58131ae78b1",
+      "adapter": "email",
+      "state": "DONE",
+      "started_at": "2026-10-17T02:23:40+00:00",
+      "ended_at": "2026-10-17T02:24:09+00:00",
+      "error_code": null,
+      "message": null,
+      "version": "builtin-1.0.1"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "a481a556c3724804",
+      "case_id": "c58131ae78b1",
+      "entity_type": "email_syntax",
+      "normalized_value": "test@example.com",
+      "title": "email_syntax",
+      "source_url": "",
+      "source_name": "local:syntax",
+      "adapter_id": "email",
+      "collected_at": "2026-10-17T02:23:40+00:00",
+      "scope_id": "c58131ae78b1",
+      "status": "VERIFIED",
+      "verification_reason": "Sintaks sederhana lolos; tidak menguji keberadaan kotak surat.",
+      "confidence_basis": "Observasi deterministik pada waktu pengambilan.",
+      "digest": "89f27804b339f041baaaa1b646909d9028bf49a1bb4971b121f047ff2d3bcd44",
+      "error_code": null,
+      "raw": "test@example.com"
+    },
+    {
+      "id": "ea32294ab8b541c7",
+      "case_id": "c58131ae78b1",
+      "entity_type": "dns",
+      "normalized_value": "example.com. 15 0 .",
+      "title": "DNS MX",
+      "source_url": "https://dns.google/resolve?name=example.com&type=MX",
+      "source_name": "https://dns.google/resolve?name=example.com&type=MX",
+      "adapter_id": "email",
+      "collected_at": "2026-10-17T02:23:48+00:00",
+      "scope_id": "c58131ae78b1",
+      "status": "VERIFIED",
+      "verification_reason": "Nilai diamati langsung pada respons sumber; bukan validasi kepemilikan/identitas.",
+      "confidence_basis": "Observasi deterministik pada waktu pengambilan.",
+      "digest": "f7470db175ef9f0f11177764ad4701a2fa0f9dee890bc9b39e3e39860c94b237",
+      "error_code": null,
+      "raw": {
+        "TTL": 22,
+        "data": "0 .",
+        "name": "example.com.",
+        "type": 15
+      }
+    },
+    {
+      "id": "a24f3a97929d4c4f",
+      "case_id": "c58131ae78b1",
+      "entity_type": "dns",
+      "normalized_value": "example.com. 16 _k2n1y4vw3qtb4skdx9e7dxt97qrmmq9",
+      "title": "DNS TXT",
+      "source_url": "https://dns.google/resolve?name=example.com&type=TXT",
+      "source_name": "https://dns.google/resolve?name=example.com&type=TXT",
+      "adapter_id": "email",
+      "collected_at": "2026-10-17T02:24:00+00:00",
+      "scope_id": "c58131ae78b1",
+      "status": "VERIFIED",
+      "verification_reason": "Nilai diamati langsung pada respons sumber; bukan validasi kepemilikan/identitas.",
+      "confidence_basis": "Observasi deterministik pada waktu pengambilan.",
+      "digest": "d88fd1de4000e11a75dee8efc98d72e7af64b182951238190c0bdbc93784dcdf",
+      "error_code": null,
+      "raw": {
+        "TTL": 300,
+        "data": "_k2n1y4vw3qtb4skdx9e7dxt97qrmmq9",
+        "name": "example.com.",
+        "type": 16
+      }
+    },
+    {
+      "id": "c84b1310d45f47dc",
+      "case_id": "c58131ae78b1",
+      "entity_type": "dns",
+      "normalized_value": "example.com. 16 v=spf1 -all",
+      "title": "DNS TXT",
+      "source_url": "https://dns.google/resolve?name=example.com&type=TXT",
+      "source_name": "https://dns.google/resolve?name=example.com&type=TXT",
+      "adapter_id": "email",
+      "collected_at": "2026-10-17T02:24:00+00:00",
+      "scope_id": "c58131ae78b1",
+      "status": "VERIFIED",
+      "verification_reason": "Nilai diamati langsung pada respons sumber; bukan validasi kepemilikan/identitas.",
+      "confidence_basis": "Observasi deterministik pada waktu pengambilan.",
+      "digest": "d75ded3c5b7e13bc09cbd6a2942262d2dde100c3d90e221fe3856b5119cc1aa7",
+      "error_code": null,
+      "raw": {
+        "TTL": 300,
+        "data": "v=spf1 -all",
+        "name": "example.com.",
+        "type": 16
+      }
+    },
+    {
+      "id": "099e7cadadf34ae3",
+      "case_id": "c58131ae78b1",
+      "entity_type": "dns",
+      "normalized_value": "_dmarc.example.com. 16 v=DMARC1;p=reject;sp=reject;adkim=s;aspf=s",
+      "title": "DNS TXT",
+      "source_url": "https://dns.google/resolve?name=_dmarc.example.com&type=TXT",
+      "source_name": "https://dns.google/resolve?name=_dmarc.example.com&type=TXT",
+      "adapter_id": "email",
+      "collected_at": "2026-10-17T02:24:09+00:00",
+      "scope_id": "c58131ae78b1",
+      "status": "VERIFIED",
+      "verification_reason": "Nilai diamati langsung pada respons sumber; bukan validasi kepemilikan/identitas.",
+      "confidence_basis": "Observasi deterministik pada waktu pengambilan.",
+      "digest": "6990f1986519119795a62d98de6a083b21d014696e2a70e79cbf41551dec8ac0",
+      "error_code": null,
+      "raw": {
+        "TTL": 300,
+        "data": "v=DMARC1;p=reject;sp=reject;adkim=s;aspf=s",
+        "name": "_dmarc.example.com.",
+        "type": 16
+      }
+    }
+  ],
+  "narrative": null,
+  "summary_only": false
+}

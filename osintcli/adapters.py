@@ -81,6 +81,8 @@ def web(ctx):
             yield failed(url,e)
 
 def tls(ctx):
+    if ctx.config["http_transport"]=="proxy":
+        raise AppError("DIRECT_REQUIRED","Pengambilan sertifikat TLS memerlukan koneksi langsung agar sertifikat proxy tidak dianggap sertifikat target.")
     ip=public_address(ctx.value,443)
     try:
         with socket.create_connection((ip,443),timeout=ctx.config["timeout_seconds"]) as sock:
@@ -105,16 +107,38 @@ PROFILE_SITES=[("GitHub","https://github.com/{}"),("GitLab","https://gitlab.com/
 def username(ctx):
     for name,template in PROFILE_SITES:
         url=template.format(quote(ctx.value,safe=""))
+        sources={"GitHub":"https://api.github.com/users/"+quote(ctx.value,safe=""),
+                 "GitLab":"https://gitlab.com/api/v4/users?"+urlencode({"username":ctx.value}),
+                 "Reddit":"https://www.reddit.com/user/"+quote(ctx.value,safe="")+"/about.json"}
+        source=sources[name]
         try:
-            r=ctx.client.request(url,max_bytes=2_000_000,redirects=0)
-            if r.status==200:
-                yield item("profile",url,url,title=name,status="CANDIDATE",reason="HTTP 200 hanya kandidat; halaman umum/soft-404 mungkin. Periksa manual. Nama sama bukan identitas sama.")
-            elif r.status==404:
-                yield item("profile_check","HTTP 404 pada waktu pemeriksaan",url,title=name,status="UNVERIFIED",reason="Tidak tersedia pada URL ini saat dicek; bukan bukti akun tidak pernah ada.")
-            else:yield failed(url,AppError("HTTP_"+str(r.status),f"Respons {r.status}; hasil tidak pasti."))
+            r=ctx.client.request(source,max_bytes=2_000_000,redirects=0)
+            if r.status==404:
+                yield item("profile_check","HTTP 404 pada waktu pemeriksaan",source,title=name,status="UNVERIFIED",reason="Tidak tersedia pada endpoint ini saat dicek; bukan bukti akun tidak pernah ada.")
+                continue
+            if r.status!=200:
+                yield failed(source,AppError("HTTP_"+str(r.status),f"Respons {r.status}; hasil tidak pasti."));continue
+            data=r.json()
+            if name=="GitHub":
+                valid=isinstance(data,dict) and isinstance(data.get("login"),str) and data["login"].casefold()==ctx.value.casefold() and isinstance(data.get("id"),int) and data.get("html_url","").casefold()==url.casefold()
+                raw={k:data.get(k) for k in ("login","id","html_url","type")} if isinstance(data,dict) else data
+            elif name=="GitLab":
+                if not isinstance(data,list):raise AppError("PROFILE_SCHEMA","Respons users GitLab bukan daftar JSON.")
+                matches=[x for x in data if isinstance(x,dict) and isinstance(x.get("username"),str) and x["username"].casefold()==ctx.value.casefold()]
+                if not matches:
+                    yield item("profile_check","API GitLab tidak mengembalikan username persis ini.",source,title=name,status="UNVERIFIED",raw=[],reason="Hasil kosong pada endpoint publik, bukan verifikasi identitas/riwayat akun.");continue
+                account=matches[0]
+                valid=isinstance(account.get("id"),int) and account.get("web_url","").casefold()==url.casefold()
+                raw={k:account.get(k) for k in ("username","id","web_url","state")}
+            else:
+                account=data.get("data",{}) if isinstance(data,dict) else {}
+                valid=isinstance(account,dict) and isinstance(account.get("name"),str) and account["name"].casefold()==ctx.value.casefold() and isinstance(account.get("id"),str) and bool(account["id"])
+                raw={k:account.get(k) for k in ("name","id","is_suspended")} if isinstance(account,dict) else account
+            if not valid:raise AppError("PROFILE_SCHEMA",f"Respons API {name} tidak cocok dengan username/id/URL yang diminta.")
+            yield item("profile",url,source,title=name,status="CANDIDATE",raw=raw,reason=f"API publik {name} mengembalikan identifier yang cocok; kepemilikan oleh orang tertentu belum diverifikasi.")
         except AppError as e:
             if e.code=="CANCELLED":raise
-            yield failed(url,e)
+            yield failed(source,e)
 
 def metadata(ctx):
     p=Path(ctx.value)

@@ -1,0 +1,6 @@
+Target: octocat
+Scope: maigret
+Depth: 1 / Ctrl+C: cancel
+[1/1] maigret: PARTIAL / 4 new / 13.8s
+CASE_ID=d2ef0b81d278
+STATE=PARTIAL

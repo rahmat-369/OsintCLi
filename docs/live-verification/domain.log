@@ -1,0 +1,8 @@
+Target: example.com
+Scope: dns, rdap, ct
+Depth: 1 / Ctrl+C: cancel
+[1/3] rdap: DONE / 6 new / 16.5s
+[2/3] ct: DONE / 7 new / 27.2s
+[3/3] dns: DONE / 9 new / 28.1s
+CASE_ID=8d30f26f711c
+STATE=DONE

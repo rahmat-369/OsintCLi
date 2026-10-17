@@ -1,170 +1,222 @@
-<p align="center"><img src="osintcli/assets/banner-readme.png" alt="OSINTCLI — by R_HMT" width="100%"></p>
+<div align="center">
 
-# OsintCLI
+![OsintCLI — Collect. Connect. Review. Report.](docs/screenshots/readme-banner.svg)
 
-Toolkit OSINT terminal **by R_HMT**. Satu menu untuk sumber publik, engine username open-source, metadata lokal, evidence bersumber, riwayat SQLite, dan laporan yang bisa dibuat tanpa AI.
+[![Version](https://img.shields.io/badge/version-2.0.0-dfff00?style=flat-square&labelColor=111810)](CHANGELOG.md)
+[![Python](https://img.shields.io/badge/python-3.11%2B-72fb53?style=flat-square&labelColor=111810)](pyproject.toml)
+[![License](https://img.shields.io/badge/license-MIT-71e5d6?style=flat-square&labelColor=111810)](LICENSE)
+[![Interface](https://img.shields.io/badge/interface-Terminal-eeeeee?style=flat-square&labelColor=111810)](#mulai)
 
-**Repository tujuan:** `rahmat-369/OsintCLI`. Paket ini siap diunggah; repository belum dibuat/dipush oleh pembuat paket.
+**Workspace investigasi sumber publik, langsung dari terminal.**
 
-## Mulai dalam tiga langkah
+Username / URL → metadata → tautan publik → review → PDF atau DOCX.
+
+[Mulai](#mulai) · [Kemampuan](#kemampuan) · [Contoh penggunaan](#contoh-penggunaan) · [Pengujian](docs/TEST-V2.md) · [Batasan](docs/LIMITATIONS.md)
+
+</div>
+
+## Apa yang baru?
+
+**Fusion** membaca profil publik, mengikuti tautan yang memang dicantumkan, dan menyimpan asal setiap hubungan. Anda bisa menerima, menolak, atau menunda hubungan dengan catatan. Bukti asli tetap tersimpan bersama waktu pengambilan dan hash.
+
+Tampilan baru memakai banner ASCII, warna kuning–hijau–cyan, animasi startup singkat, dan menu bernomor. ASCII asli ada di `osintcli/assets/banner-original.txt`; terminal sempit memakai versi ringkas agar gambar tidak pecah. Animasi bisa dimatikan.
+
+Laporan **PDF dan DOCX** berisi ringkasan, metadata per profil, hubungan, catatan review, sumber, dan kegagalan pengumpulan. JSON/CSV/HTML/PNG tetap tersedia. Semua data kasus disimpan lokal di SQLite.
+
+<p align="center">
+  <img src="docs/screenshots/terminal-menu.png" width="380" alt="Tampilan terminal OsintCLI 2.0 dalam PTY Linux 40 kolom" />
+</p>
+
+<details>
+<summary>Lihat rekaman alur menu → evidence → export</summary>
+
+![Rekaman terminal dengan kasus demonstrasi yang diberi label](docs/screenshots/terminal-demo.gif)
+
+Rekaman berasal dari interaksi PTY Linux, bukan rekaman perangkat Android. Data demonstrasi diberi label **OFFLINE FIXTURE**. Hasil pengujian sumber nyata dibahas terpisah dalam [TEST-V2](docs/TEST-V2.md).
+
+</details>
+
+## Mulai
+
+### Ubuntu / VPS
 
 ```bash
+sudo apt-get update
+sudo apt-get install -y python3 python3-venv git
+
 git clone https://github.com/rahmat-369/OsintCLI.git
 cd OsintCLI
 bash install.sh
 bash start.sh
 ```
 
-URL clone berlaku **setelah Anda membuat dan mengisi repository tersebut**. Dari ZIP: ekstrak, masuk ke folder `OsintCLI`, lalu jalankan dua perintah terakhir. Installer membuat virtual environment dan database secara otomatis. Tidak perlu akun database, VPS, API key, atau root.
+Python **3.11 atau lebih baru** diperlukan. `start.sh` membuka menu. Installer memasang aplikasi dan dependensi laporan di virtual environment sendiri.
 
-**Termux:** pasang `git` dan `python` terlebih dahulu (`pkg update && pkg install git python`). Jalankan proyek di direktori home Termux, bukan storage bersama Android. **Linux:** Python 3.11+ dan modul `venv` diperlukan. Pada Debian/Ubuntu, pasang `python3-venv` bila belum ada. Tidak ada script download-and-execute melalui pipe.
-
-Perintah `osintcli` terpasang otomatis di PATH Termux. Linux: `export PATH="$HOME/.local/bin:$PATH"`; `bash start.sh` selalu bisa dipakai dari folder repo. `bash install.sh --core-only` memasang CLI dengan standard library saja; PDF/PNG dan parsing image/PDF memerlukan instalasi penuh.
-
-## Gabungkan tools open-source
-
-Instal hanya engine yang ingin dipakai; masing-masing dipisahkan dalam virtual environment untuk menghindari benturan dependensi.
+### Termux langsung di Android
 
 ```bash
+pkg update
+pkg install python git
+
+git clone https://github.com/rahmat-369/OsintCLI.git
+cd OsintCLI
+bash scripts/install-termux.sh
+osintcli
+```
+
+Untuk menyimpan laporan ke Download Android, jalankan `termux-setup-storage` sekali dan izinkan akses. Modul native tertentu mungkin memerlukan kompilasi; Fusion bawaan tidak membutuhkan `curl_cffi`. Pengujian perangkat Termux fisik belum dilakukan.
+
+**Jika Termux dipakai untuk SSH ke VPS:** jalankan panduan Ubuntu di sesi SSH. Aplikasi dan laporan berada di VPS; izin storage Android hanya diperlukan pada sesi Termux lokal untuk mengunduh laporan.
+
+### Update instalasi lama
+
+```bash
+cd ~/OsintCLI
+git pull --ff-only
+bash install.sh
+bash start.sh
+```
+
+Database versi 1 dimigrasikan otomatis; sebelum migrasi, salinan `osintcli.db.v1.backup` dibuat di folder data. Kasus lama tetap dapat dibuka. Untuk instalasi core tanpa dependensi laporan: `bash install.sh --core-only`.
+
+## Kemampuan
+
+| Masukan / modul | Hasil yang benar-benar dikumpulkan |
+| --- | --- |
+| Username / Fusion | Metadata profil GitHub, GitLab, Instagram, TikTok, Reddit **jika sumber publik dapat dibaca** |
+| URL profil | Profil tertentu, metadata, dan tautan publik keluar |
+| Website / link hub | Judul, deskripsi, tautan profil sosial, kontak publik, `rel=me`; hub yang dikenal dapat meneruskan tautan keluar |
+| Domain | DNS, RDAP, certificate transparency; HTTP/TLS bila dipilih |
+| IP publik | Registrasi jaringan dan ASN; bukan lokasi orang |
+| Email | Sintaks dan konfigurasi DNS mail; bukan pembuktian mailbox atau akun sosial |
+| Nomor telepon | Normalisasi format internasional; kontak `wa.me`/`tel:` yang ditemui dari halaman disimpan sebagai hubungan publik |
+| File lokal | Hash dan metadata gambar, PDF, OOXML; ExifTool opsional |
+| Evidence / review | Sumber, waktu, hash, hubungan, riwayat keputusan, resume |
+| Ekspor | PDF, DOCX, JSON, CSV, HTML, PNG |
+| AI opsional | Narasi dari subset bukti dengan persetujuan pengiriman dan review; laporan tetap bekerja tanpa AI |
+
+**Nomor WhatsApp saja tidak mengungkap akun Instagram/TikTok, nama, lokasi, atau kamera.** Kesamaan username lintas situs juga tidak membuktikan satu pemilik. Laporan menunjukkan apa yang diamati dan apa yang belum bisa disimpulkan.
+
+### Mode Fusion
+
+| Mode | Situs awal untuk username | Kedalaman tautan |
+| --- | --- | --- |
+| `quick` | GitHub, GitLab | 0 — hanya catat tautan |
+| `standard` | GitHub, GitLab, Instagram, TikTok, Reddit | 1 |
+| `deep` | Situs yang sama | 2 |
+
+Default maksimal **12 halaman**, dapat diatur 1–30. URL berulang tidak dikunjungi ulang; tautan dengan query, media, kontak, dan host internal tidak diikuti otomatis. Tautan baru tidak memicu pencarian massal semua variasi username. Mode deep menambah penelusuran tautan, bukan melewati akun privat atau login.
+
+## Repo sumber terbuka yang digunakan
+
+| Proyek | Peran di OsintCLI | Cara integrasi |
+| --- | --- | --- |
+| [User Scanner](https://github.com/kaifcodec/user-scanner) | Dasar ekstraksi metadata publik Instagram/TikTok; engine alternatif GitHub/TikTok | Parser publik diadaptasi dengan kredit MIT; CLI opsional pada commit yang dipin |
+| [Sherlock](https://github.com/sherlock-project/sherlock) | Pembanding kandidat username GitHub/GitLab/Reddit | Proses terpisah; CSV dinormalisasi ke evidence |
+| [Maigret](https://github.com/soxoj/maigret) | Engine pembanding username | Proses terpisah; scope situs dipilih, tanpa rekursi upstream |
+| [ExifTool](https://github.com/exiftool/exiftool) | Metadata file lokal lebih luas | Proses lokal, hasil JSON dinormalisasi |
+
+Fusion bawaan, Sherlock, Maigret, dan User Scanner dipilih **satu engine per scan username** untuk menghindari permintaan duplikat. Penggabungan ada pada format bukti, review, riwayat kasus, dan laporan. Seluruh ribuan modul upstream tidak otomatis diaktifkan.
+
+```bash
+# Opsional: jalankan dari folder repo, pasang yang diperlukan saja.
+bash scripts/install-tools.sh user-scanner
 bash scripts/install-tools.sh sherlock
 bash scripts/install-tools.sh maigret
-bash scripts/install-tools.sh exiftool
-osintcli doctor
+
+# Ubuntu: ExifTool dari package manager
+sudo apt-get install libimage-exiftool-perl
 ```
 
-Pada Linux Debian/Ubuntu, perintah ExifTool menampilkan instruksi `sudo apt-get install libimage-exiftool-perl` agar pemasangan paket sistem tetap eksplisit. Pada Termux, script memakai `pkg install exiftool`. Untuk format yang didukung, metadata bawaan tetap berfungsi tanpa ExifTool.
+User Scanner eksternal memerlukan dependensi native `curl_cffi`; gunakan Fusion bawaan bila pemasangannya tidak tersedia pada arsitektur Termux. Versi/commit dan dependensi tercatat saat pemasangan. Lihat [THIRD_PARTY_NOTICES](THIRD_PARTY_NOTICES.md).
 
-Sherlock dan Maigret dihubungkan sebagai **engine nyata**, hasil CSV dinormalisasi, disimpan bersama provenance, dan masuk ke laporan yang sama. Upstream tidak diganti mereknya atau diklaim sebagai karya R_HMT. Setiap kasus username memilih satu engine agar tidak mengirim kueri duplikat. Default dibatasi GitHub/GitLab/Reddit; database Maigret yang diaudit juga menyertakan GitHub Gist sebagai sumber turunan GitHub. Sherlock dapat melewati situs yang dikecualikan upstream. Tidak ada scan seluruh daftar situs secara otomatis.
+## Contoh penggunaan
 
-## Menu
-
-```text
-[01] Auto Investigation
-[02] Username Intelligence
-[03] Domain / Website
-[04] IP / Network
-[05] Email Intelligence
-[06] Metadata Forensics
-[07] Evidence & History
-[08] AI Narration (optional)
-[09] Generate Report
-[10] Settings / Modules
-[00] Exit
-```
-
-Menu berbahasa Indonesia, nomor + Enter, satu kolom, dukungan 32/40/60/80/120 kolom, ikon ANSI RGB/256 warna dan fallback teks. `NO_COLOR=1 osintcli` mematikan warna. Semua teks sumber dibersihkan dari kontrol terminal.
-
-## Fitur dan status
-
-| Bagian | Perilaku implementasi | Validasi rilis |
-|---|---|---|
-| DNS/domain | A, AAAA, MX, NS, TXT lewat Google Public DNS; RDAP; CT maksimal 100 nama | Parser/galat diuji; sumber publik diprobe HTTP |
-| IP/ASN | RDAP publik + Team Cymru lewat DNS TXT | Fixture kontrak; koneksi langsung dibatasi lingkungan build |
-| Website | Header, robots.txt, sitemap.xml, TLS; hanya ketika dipilih | Kontrak HTTP, redirect, TLS/timeout diuji |
-| Username bawaan | Tiga URL publik; HTTP 200 hanya kandidat | Fixture dan alur penanganan galat |
-| Sherlock / Maigret | Proses terpisah, pin commit, hasil CSV masuk evidence | Instalasi Linux dan output live diuji |
-| Metadata | SHA-256, image/EXIF, PDF, OOXML; ExifTool eksternal | File lokal dan ExifTool nyata diuji |
-| Kasus/job | SQLite otomatis, deduplikasi per sumber, cancel, resume, hapus | Pengujian otomatis |
-| Laporan | PDF, JSON, CSV aman formula, HTML escaped, PNG chart | 0/106 record; font Arab/Latin; render PDF diperiksa |
-| AI Nexray | Preview, consent, batas URL, schema parser, draft/review | Tes positif/negatif; endpoint live memberi HTML “Site Unavailable” |
-| Android Termux | Installer tanpa root, library ringan, export Download berizin | **Belum diuji pada perangkat Android fisik** |
-
-Status `VERIFIED` berarti **observasi cocok dengan respons sumber**, bukan verifikasi seseorang, kepemilikan akun, atau kebenaran isi sumber. `CANDIDATE` perlu pemeriksaan manual. `FAILED_SOURCE` menunjukkan keterbatasan cakupan. Nol hasil bukan bukti target tidak ada.
-
-## Contoh terminal
+Semua contoh CLI berikut dijalankan dari folder repo. Untuk menu interaktif cukup `bash start.sh`.
 
 ```bash
-# Scope preview tanpa koneksi
-osintcli scan example.com
+# Preview scope tanpa mengirim permintaan.
+bash start.sh scan octocat --mode standard
 
-# Jalankan scope yang Anda izinkan
-osintcli scan example.com --yes
-osintcli scan example.com --modules dns,rdap,web,tls --yes
-osintcli scan 1.1.1.1 --yes
-osintcli scan user@example.com --kind email --yes
-osintcli scan octocat --kind username --modules sherlock --yes
-osintcli scan octocat --kind username --modules maigret --yes
-osintcli scan ./foto.jpg --kind metadata --modules metadata,exiftool --yes
+# Jalankan setelah scope sesuai.
+bash start.sh scan octocat --mode standard --max-nodes 12 --yes
 
-osintcli history
-osintcli show CASE_ID
-osintcli resume CASE_ID --yes
-osintcli report CASE_ID --out ./hasil
-osintcli report CASE_ID --formats pdf,json,csv --summary
-osintcli delete CASE_ID --yes
+# Mulai dari satu profil, lalu ikuti tautan publik maksimal dua tingkat.
+bash start.sh scan https://github.com/octocat --kind profile --mode deep --yes
 
-# Demo offline berlabel jelas, bukan temuan internet
-osintcli demo --count 12 --report --out ./demo
+# Modul lama tetap tersedia.
+bash start.sh scan example.com --kind domain --yes
+bash start.sh scan 1.1.1.1 --kind ip --yes
+bash start.sh scan foto.jpg --kind metadata --yes
+
+# Engine alternatif, setelah dipasang.
+bash start.sh scan octocat --kind username --modules user-scanner --yes
 ```
 
-Untuk username yang mengandung titik, gunakan `--kind username`; deteksi otomatis memperlakukan teks dengan titik sebagai domain. Input URL dinormalisasi ke hostname; jalur URL bukan scope crawl. Exit code: `0` selesai/preview, `2` galat atau hasil parsial, `130` pembatalan di luar job manager. Saat scan dibatalkan, kasus disimpan `CANCELLED` dan kode keluar `2`.
-
-`Ctrl+C` meminta pembatalan kooperatif; request yang sedang menunggu respons bisa selesai sampai timeout. Proses tool eksternal dihentikan sebagai satu process group. `resume` mengulang adapter yang belum selesai; evidence lama tetap tersimpan dan duplikat identik tidak ditambahkan. Tidak ada recursive expansion atau brute force.
-
-## AI opsional
+Output scan menampilkan `CASE_ID=...`. Gunakan ID tersebut pada perintah berikut:
 
 ```bash
-osintcli ai CASE_ID                         # preview saja
-osintcli ai CASE_ID --limit 1 --send --yes  # consent per pengiriman
-osintcli review CASE_ID                    # baca draft
-osintcli review CASE_ID --approve          # setelah verifikasi manual
-osintcli report CASE_ID --include-ai
+bash start.sh history
+bash start.sh show CASE_ID
+bash start.sh graph CASE_ID
+
+# Penerimaan adalah keputusan operator; wajib menuliskan alasannya.
+bash start.sh evidence-review CASE_ID EVIDENCE_ID accepted --note "Tautan terlihat pada bio sumber"
+
+bash start.sh report CASE_ID --formats pdf,docx,json --out ./hasil
+bash start.sh resume CASE_ID --yes
 ```
 
-Preset: `https://api.nexray.eu.cc/ai/claude`, GET parameter `text`, field respons `result`, sukses `status=true`. **Tidak membutuhkan API key yang dibuat-buat.** Pada pengujian rilis, endpoint mengembalikan HTML “Site Unavailable”; aplikasi menolaknya. PDF tetap bisa dibuat tanpa AI. Ketersediaan provider tidak dapat dijamin oleh kode ini.
+Di menu **[07]**, pilih kasus → **[4] hubungan** atau **[5] review**. Di menu **[09]**, pilih format dan lokasi. Enter atau `lokal` memakai folder laporan bawaan; `android` memakai Download Android; masukan lain diperlakukan sebagai path.
 
-GET menempatkan prompt pada URL/log provider. Default hanya mengirim satu evidence kecil yang telah difilter; profil, email, file mentah, dan EXIF tidak dikirim otomatis. `--include-sensitive` adalah opt-in tambahan, dan masih membutuhkan preview/consent. Prompt terlalu panjang ditolak sebelum pengiriman tanpa pemotongan diam-diam. Angka tambahan yang tidak ada di prompt ditolak, tetapi pemeriksaan itu bukan jaminan bahwa narasi benar: selalu lakukan review manual. Perubahan dataset membatalkan penggunaan narasi reviewed yang lama.
+### Mengambil laporan VPS ke HP
+
+Salin path absolut yang ditampilkan setelah export. Buka sesi **Termux lokal**, kemudian:
 
 ```bash
-osintcli config custom_instructions 'Tulis ringkas. Bedakan observasi dan keterbatasan.'
-osintcli config timeout_seconds 20
-osintcli config endpoint 'https://provider-anda.example/endpoint'
-osintcli config method POST
+termux-setup-storage
+scp -P PORT_SSH USER@HOST:/path/laporan.pdf ~/storage/downloads/
 ```
 
-POST tersedia sebagai transport JSON untuk provider lain; **dukungan POST Nexray tidak diklaim**. Lihat [konfigurasi provider](docs/AI.md). Bukti dikirim hanya melalui aksi AI eksplisit, tidak saat scan/report.
+Ganti `PORT_SSH`, `USER`, `HOST`, dan path sesuai VPS Anda. Untuk Word, unduh file `.docx` dengan cara yang sama.
 
-## Hasil dan privasi
+## Arti hasil
 
-- Database: `~/.local/share/osintcli/osintcli.db`.
-- Reports: `~/.local/share/osintcli/reports/CASE_ID/`.
-- Config: `~/.config/osintcli/config.toml`.
-- Optional secrets: `~/.config/osintcli/secrets.toml`, mode `0600`.
-- Data/config bisa dipindahkan dengan `OSINTCLI_DATA_DIR` dan `OSINTCLI_CONFIG_DIR`.
+| Status | Arti |
+| --- | --- |
+| `VERIFIED` | Observasi cocok dengan sumber yang dibaca; bukan verifikasi identitas orang |
+| `CANDIDATE` | Profil atau hubungan yang perlu ditinjau |
+| `UNVERIFIED` | Informasi terbatas, hasil negatif, atau batas pengumpulan |
+| `FAILED_SOURCE` | Sumber gagal, diblokir, atau formatnya tidak dikenali |
+| Kasus `PARTIAL` | Sebagian sumber gagal; bukti yang berhasil tetap dapat diekspor |
 
-Android: jalankan `termux-setup-storage`, beri izin, lalu pilih `android` pada folder export di menu laporan. Aplikasi tidak meminta storage untuk sekadar scan. Hapus kasus juga menghapus laporan canonical lokal, tetapi tidak salinan yang sudah diekspor. Database lokal tidak dienkripsi; lindungi perangkat Anda.
+Review `accepted`, `rejected`, dan `pending` disimpan terpisah dari status sumber. Riwayat review tidak menghapus bukti asli. Narasi AI yang lama perlu ditinjau ulang setelah dataset/review berubah.
 
-## Bukti pengujian dan demo
-
-[Catatan pengujian](docs/TEST-REPORT.md) • [Batas yang diketahui](docs/LIMITATIONS.md) • [Arsitektur](docs/ARCHITECTURE.md) • [Audit upstream](THIRD_PARTY_NOTICES.md) • [Laporan contoh](docs/samples/)
-
-![Actual 40-column Linux CLI recording, offline fixture](docs/screenshots/terminal-demo.gif)
-
-GIF di atas dirender dari rekaman output aplikasi yang benar-benar dijalankan pada pseudo-terminal Linux 40 kolom. **Bukan screenshot Android/Termux, dan data berlabel fixture.** File `.cast` dan teks rekamannya tersedia di folder yang sama.
+## Pengaturan dan pengujian
 
 ```bash
+bash start.sh doctor
+bash start.sh config animation off
+bash start.sh config fusion_mode standard
+bash start.sh config fusion_max_nodes 12
+
+# Pengujian regresi lokal setelah dependensi reports dipasang.
 python3 -m unittest discover -s tests -v
-python3 scripts/make-ansi.py
+
+# Pengujian sumber nyata; membutuhkan jaringan.
+python3 scripts/verify-fusion.py --out output/live-v2
 ```
 
-CI GitHub menjalankan tes pada Python 3.11–3.13; konfigurasi CI disertakan, tetapi hasil remote baru ada setelah repository dipush. Versi yang diuji langsung saat paket dibangun: Linux Python 3.12.14.
+Animasi juga dapat dilewati dengan Ctrl+C saat startup atau `OSINTCLI_NO_ANIMATION=1`. `NO_COLOR=1` menonaktifkan warna. Output noninteraktif tidak dianimasikan.
 
-## Push ke GitHub
+Default jaringan memakai koneksi langsung dengan validasi alamat publik. Bila lingkungan memang mewajibkan proxy, baca [PROXY.md](docs/PROXY.md); mode proxy membatasi hostname yang diizinkan. Situs yang tidak dapat dijangkau tetap ditulis sebagai kegagalan, bukan diabaikan.
 
-Buat repo kosong `rahmat-369/OsintCLI` (tanpa menambahkan README lain), lalu dari folder hasil ekstraksi:
+Rincian tes aktual dan kegagalan sumber: **[TEST-V2.md](docs/TEST-V2.md)**. Exit code scan `0` berarti modul selesai, `2` berarti hasil parsial/gagal, `130` untuk pembatalan sebelum selesai; selalu baca status kasus dan sumber. Modul nomor hanya memvalidasi format.
 
-```bash
-git init -b main
-git add .
-git commit -m "Build OsintCLI v1.0.0"
-git remote add origin https://github.com/rahmat-369/OsintCLI.git
-git push -u origin main
-```
+## Dokumentasi
 
-Gunakan login GitHub biasa/credential manager saat diminta. Jangan menaruh token pada kode, URL remote, README, atau chat.
+[Arsitektur](docs/ARCHITECTURE.md) · [Laporan](docs/REPORT-SPEC.md) · [AI](docs/AI.md) · [Batasan](docs/LIMITATIONS.md) · [Keamanan](SECURITY.md) · [Changelog](CHANGELOG.md)
 
-## Kredit
+Dikembangkan oleh **[R_HMT](https://github.com/rahmat-369)** · [rhmt.biz.id](https://rhmt.biz.id)
 
-Dikembangkan dan dikurasi untuk **R_HMT** — [GitHub](https://github.com/rahmat-369) · [Website](https://rhmt.biz.id).
-
-Kode orchestration OsintCLI: MIT. Sherlock, Maigret, ExifTool, pustaka Python, dan font mempertahankan lisensi masing-masing. Detail pin, lisensi, batas reuse, dan atribusi terdapat di [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). Banner adalah aset referensi yang disediakan pemilik proyek; ikon globe/lens dibuat khusus sebagai vector source yang dapat diedit. Tidak ada klaim afiliasi resmi dengan proyek upstream.
+Lisensi MIT untuk OsintCLI. Lisensi, atribusi, dan batas integrasi proyek upstream tersedia di [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).

@@ -1,0 +1,595 @@
+{
+  "schema_version": 1,
+  "report_id": "d660f57d162c49ac",
+  "generator": "OsintCLI 1.0.1",
+  "generated_at": "2026-10-17T02:23:23+00:00",
+  "dataset_digest": "5823dca9867563b5cef621aa5704fc66b6305e2fc810fde0217f35a42fbe7a89",
+  "case": {
+    "id": "8d30f26f711c",
+    "target": "example.com",
+    "kind": "domain",
+    "created_at": "2026-10-17T02:22:55+00:00",
+    "state": "DONE",
+    "scope": [
+      "dns",
+      "rdap",
+      "ct"
+    ]
+  },
+  "counts": {
+    "total": 22,
+    "by_category": {
+      "dns": 9,
+      "rdap": 6,
+      "certificate_name": 7
+    },
+    "by_status": {
+      "VERIFIED": 15,
+      "CANDIDATE": 7
+    }
+  },
+  "jobs": [
+    {
+      "id": "515f62d46a024f8aa95770aa22aebdf4",
+      "case_id": "8d30f26f711c",
+      "adapter": "dns",
+      "state": "DONE",
+      "started_at": "2026-10-17T02:22:55+00:00",
+      "ended_at": "2026-10-17T02:23:23+00:00",
+      "error_code": null,
+      "message": null,
+      "version": "builtin-1.0.1"
+    },
+    {
+      "id": "3f349352a550410992f03766a2ad8a80",
+      "case_id": "8d30f26f711c",
+      "adapter": "rdap",
+      "state": "DONE",
+      "started_at": "2026-10-17T02:22:55+00:00",
+      "ended_at": "2026-10-17T02:23:11+00:00",
+      "error_code": null,
+      "message": null,
+      "version": "builtin-1.0.1"
+    },
+    {
+      "id": "bd8f1f5b7f4840989efe158ba2acaacc",
+      "case_id": "8d30f26f711c",
+      "adapter": "ct",
+      "state": "DONE",
+      "started_at": "2026-10-17T02:22:55+00:00",
+      "ended_at": "2026-10-17T02:23:22+00:00",
+      "error_code": null,
+      "message": null,
+      "version": "builtin-1.0.1"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "5578f19476d5403a",
+      "case_id": "8d30f26f711c",
+      "entity_type": "dns",
+      "normalized_value": "example.com. 1 172.66.147.243",
+      "title": "DNS A",
+      "source_url": "https://dns.google/resolve?name=example.com&type=A",
+      "source_name": "https://dns.google/resolve?name=example.com&type=A",
+      "adapter_id": "dns",
+      "collected_at": "2026-10-17T02:23:01+00:00",
+      "scope_id": "8d30f26f711c",
+      "status": "VERIFIED",
+      "verification_reason": "Nilai diamati langsung pada respons sumber; bukan validasi kepemilikan/identitas.",
+      "confidence_basis": "Observasi deterministik pada waktu pengambilan.",
+      "digest": "efc970771819c843ddea866ca5b3b974539e1ef83ab5b15c892a2e6601f3278d",
+      "error_code": null,
+      "raw": {
+        "TTL": 300,
+        "data": "172.66.147.243",
+        "name": "example.com.",
+        "type": 1
+      }
+    },
+    {
+      "id": "958a483914ee454e",
+      "case_id": "8d30f26f711c",
+      "entity_type": "dns",
+      "normalized_value": "example.com. 1 104.20.23.154",
+      "title": "DNS A",
+      "source_url": "https://dns.google/resolve?name=example.com&type=A",
+      "source_name": "https://dns.google/resolve?name=example.com&type=A",
+      "adapter_id": "dns",
+      "collected_at": "2026-10-17T02:23:01+00:00",
+      "scope_id": "8d30f26f711c",
+      "status": "VERIFIED",
+      "verification_reason": "Nilai diamati langsung pada respons sumber; bukan validasi kepemilikan/identitas.",
+      "confidence_basis": "Observasi deterministik pada waktu pengambilan.",
+      "digest": "89ac9446f8a0c30ccadde30599f4af0e275df51280763a8a3eddb6f5b77cc4cd",
+      "error_code": null,
+      "raw": {
+        "TTL": 300,
+        "data": "104.20.23.154",
+        "name": "example.com.",
+        "type": 1
+      }
+    },
+    {
+      "id": "12dd94af3a4b4b46",
+      "case_id": "8d30f26f711c",
+      "entity_type": "dns",
+      "normalized_value": "example.com. 28 2606:4700:10::ac42:93f3",
+      "title": "DNS AAAA",
+      "source_url": "https://dns.google/resolve?name=example.com&type=AAAA",
+      "source_name": "https://dns.google/resolve?name=example.com&type=AAAA",
+      "adapter_id": "dns",
+      "collected_at": "2026-10-17T02:23:05+00:00",
+      "scope_id": "8d30f26f711c",
+      "status": "VERIFIED",
+      "verification_reason": "Nilai diamati langsung pada respons sumber; bukan validasi kepemilikan/identitas.",
+      "confidence_basis": "Observasi deterministik pada waktu pengambilan.",
+      "digest": "cfda85cbe1b425db1323dd1d8f49faf727bb08df023d0f4e61bb83682f87425d",
+      "error_code": null,
+      "raw": {
+        "TTL": 300,
+        "data": "2606:4700:10::ac42:93f3",
+        "name": "example.com.",
+        "type": 28
+      }
+    },
+    {
+      "id": "435eed4067e74d60",
+      "case_id": "8d30f26f711c",
+      "entity_type": "dns",
+      "normalized_value": "example.com. 28 2606:4700:10::6814:179a",
+      "title": "DNS AAAA",
+      "source_url": "https://dns.google/resolve?name=example.com&type=AAAA",
+      "source_name": "https://dns.google/resolve?name=example.com&type=AAAA",
+      "adapter_id": "dns",
+      "collected_at": "2026-10-17T02:23:05+00:00",
+      "scope_id": "8d30f26f711c",
+      "status": "VERIFIED",
+      "verification_reason": "Nilai diamati langsung pada respons sumber; bukan validasi kepemilikan/identitas.",
+      "confidence_basis": "Observasi deterministik pada waktu pengambilan.",
+      "digest": "f3ca038b054bc0c236745b8f84e9cb427a5a8b1246fc41423b2c355fb4a7a0ba",
+      "error_code": null,
+      "raw": {
+        "TTL": 300,
+        "data": "2606:4700:10::6814:179a",
+        "name": "example.com.",
+        "type": 28
+      }
+    },
+    {
+      "id": "a2b3c1928b0a4f38",
+      "case_id": "8d30f26f711c",
+      "entity_type": "dns",
+      "normalized_value": "example.com. 15 0 .",
+      "title": "DNS MX",
+      "source_url": "https://dns.google/resolve?name=example.com&type=MX",
+      "source_name": "https://dns.google/resolve?name=example.com&type=MX",
+      "adapter_id": "dns",
+      "collected_at": "2026-10-17T02:23:09+00:00",
+      "scope_id": "8d30f26f711c",
+      "status": "VERIFIED",
+      "verification_reason": "Nilai diamati langsung pada respons sumber; bukan validasi kepemilikan/identitas.",
+      "confidence_basis": "Observasi deterministik pada waktu pengambilan.",
+      "digest": "f7470db175ef9f0f11177764ad4701a2fa0f9dee890bc9b39e3e39860c94b237",
+      "error_code": null,
+      "raw": {
+        "TTL": 159,
+        "data": "0 .",
+        "name": "example.com.",
+        "type": 15
+      }
+    },
+    {
+      "id": "06f3f566ef60484a",
+      "case_id": "8d30f26f711c",
+      "entity_type": "rdap",
+      "normalized_value": "[{\"eventAction\":\"registration\",\"eventDate\":\"1995-08-14T04:00:00Z\"},{\"eventAction\":\"expiration\",\"eventDate\":\"2027-08-13T04:00:00Z\"},{\"eventAction\":\"last changed\",\"eventDate\":\"2026-08-14T08:01:43Z\"},{\"eventAction\":\"last update of RDAP database\",\"eventDate\":\"2026-10-17T02:22:56Z\"}]",
+      "title": "RDAP / events",
+      "source_url": "https://rdap.verisign.com/com/v1/domain/example.com",
+      "source_name": "https://rdap.verisign.com/com/v1/domain/example.com",
+      "adapter_id": "rdap",
+      "collected_at": "2026-10-17T02:23:11+00:00",
+      "scope_id": "8d30f26f711c",
+      "status": "VERIFIED",
+      "verification_reason": "Data registrasi publik RDAP; country adalah administrasi registrasi, bukan lokasi orang/perangkat.",
+      "confidence_basis": "Observasi deterministik pada waktu pengambilan.",
+      "digest": "0f5184a9cc951791c40c33bf20251eb0c7618e347cd712d3e9ca36638f878fd3",
+      "error_code": null,
+      "raw": {
+        "events": [
+          {
+            "eventAction": "registration",
+            "eventDate": "1995-08-14T04:00:00Z"
+          },
+          {
+            "eventAction": "expiration",
+            "eventDate": "2027-08-13T04:00:00Z"
+          },
+          {
+            "eventAction": "last changed",
+            "eventDate": "2026-08-14T08:01:43Z"
+          },
+          {
+            "eventAction": "last update of RDAP database",
+            "eventDate": "2026-10-17T02:22:56Z"
+          }
+        ]
+      }
+    },
+    {
+      "id": "622e660d83b24111",
+      "case_id": "8d30f26f711c",
+      "entity_type": "rdap",
+      "normalized_value": "[\"client delete prohibited\",\"client transfer prohibited\",\"client update prohibited\"]",
+      "title": "RDAP / status",
+      "source_url": "https://rdap.verisign.com/com/v1/domain/example.com",
+      "source_name": "https://rdap.verisign.com/com/v1/domain/example.com",
+      "adapter_id": "rdap",
+      "collected_at": "2026-10-17T02:23:11+00:00",
+      "scope_id": "8d30f26f711c",
+      "status": "VERIFIED",
+      "verification_reason": "Data registrasi publik RDAP; country adalah administrasi registrasi, bukan lokasi orang/perangkat.",
+      "confidence_basis": "Observasi deterministik pada waktu pengambilan.",
+      "digest": "dcb551f169339f8ffc131f0e1f58a8a2e482d0b8dd26ada6fcc4c9ad55acaa5f",
+      "error_code": null,
+      "raw": {
+        "status": [
+          "client delete prohibited",
+          "client transfer prohibited",
+          "client update prohibited"
+        ]
+      }
+    },
+    {
+      "id": "6c535b7334ad47ca",
+      "case_id": "8d30f26f711c",
+      "entity_type": "rdap",
+      "normalized_value": "domain",
+      "title": "RDAP / objectClassName",
+      "source_url": "https://rdap.verisign.com/com/v1/domain/example.com",
+      "source_name": "https://rdap.verisign.com/com/v1/domain/example.com",
+      "adapter_id": "rdap",
+      "collected_at": "2026-10-17T02:23:11+00:00",
+      "scope_id": "8d30f26f711c",
+      "status": "VERIFIED",
+      "verification_reason": "Data registrasi publik RDAP; country adalah administrasi registrasi, bukan lokasi orang/perangkat.",
+      "confidence_basis": "Observasi deterministik pada waktu pengambilan.",
+      "digest": "bd26b8716d8050553987a033d28f124fa072229961c14fd2085183e4299993c9",
+      "error_code": null,
+      "raw": {
+        "objectClassName": "domain"
+      }
+    },
+    {
+      "id": "8244f879b16641fa",
+      "case_id": "8d30f26f711c",
+      "entity_type": "rdap",
+      "normalized_value": "[{\"ldhName\":\"ELLIOTT.NS.CLOUDFLARE.COM\",\"objectClassName\":\"nameserver\"},{\"ldhName\":\"HERA.NS.CLOUDFLARE.COM\",\"objectClassName\":\"nameserver\"}]",
+      "title": "RDAP / nameservers",
+      "source_url": "https://rdap.verisign.com/com/v1/domain/example.com",
+      "source_name": "https://rdap.verisign.com/com/v1/domain/example.com",
+      "adapter_id": "rdap",
+      "collected_at": "2026-10-17T02:23:11+00:00",
+      "scope_id": "8d30f26f711c",
+      "status": "VERIFIED",
+      "verification_reason": "Data registrasi publik RDAP; country adalah administrasi registrasi, bukan lokasi orang/perangkat.",
+      "confidence_basis": "Observasi deterministik pada waktu pengambilan.",
+      "digest": "1dc2a6579723c9b7ff145ab101a94f8c36d8c7d715d1449a18c604688c3b0bb4",
+      "error_code": null,
+      "raw": {
+        "nameservers": [
+          {
+            "ldhName": "ELLIOTT.NS.CLOUDFLARE.COM",
+            "objectClassName": "nameserver"
+          },
+          {
+            "ldhName": "HERA.NS.CLOUDFLARE.COM",
+            "objectClassName": "nameserver"
+          }
+        ]
+      }
+    },
+    {
+      "id": "be62c539c5264d01",
+      "case_id": "8d30f26f711c",
+      "entity_type": "rdap",
+      "normalized_value": "EXAMPLE.COM",
+      "title": "RDAP / ldhName",
+      "source_url": "https://rdap.verisign.com/com/v1/domain/example.com",
+      "source_name": "https://rdap.verisign.com/com/v1/domain/example.com",
+      "adapter_id": "rdap",
+      "collected_at": "2026-10-17T02:23:11+00:00",
+      "scope_id": "8d30f26f711c",
+      "status": "VERIFIED",
+      "verification_reason": "Data registrasi publik RDAP; country adalah administrasi registrasi, bukan lokasi orang/perangkat.",
+      "confidence_basis": "Observasi deterministik pada waktu pengambilan.",
+      "digest": "a3190fe918f3e903c6a2f02db8281b0b4f07a9fa498f0976a8a92472e644bc74",
+      "error_code": null,
+      "raw": {
+        "ldhName": "EXAMPLE.COM"
+      }
+    },
+    {
+      "id": "fd8755130b204ad3",
+      "case_id": "8d30f26f711c",
+      "entity_type": "rdap",
+      "normalized_value": "2336799_DOMAIN_COM-VRSN",
+      "title": "RDAP / handle",
+      "source_url": "https://rdap.verisign.com/com/v1/domain/example.com",
+      "source_name": "https://rdap.verisign.com/com/v1/domain/example.com",
+      "adapter_id": "rdap",
+      "collected_at": "2026-10-17T02:23:11+00:00",
+      "scope_id": "8d30f26f711c",
+      "status": "VERIFIED",
+      "verification_reason": "Data registrasi publik RDAP; country adalah administrasi registrasi, bukan lokasi orang/perangkat.",
+      "confidence_basis": "Observasi deterministik pada waktu pengambilan.",
+      "digest": "eb3fba4c10c99a95447ea4d336e553653f4b752f3ca7866bffbddba3e69615fb",
+      "error_code": null,
+      "raw": {
+        "handle": "2336799_DOMAIN_COM-VRSN"
+      }
+    },
+    {
+      "id": "8ecf0b87780e4f9d",
+      "case_id": "8d30f26f711c",
+      "entity_type": "dns",
+      "normalized_value": "example.com. 2 hera.ns.cloudflare.com.",
+      "title": "DNS NS",
+      "source_url": "https://dns.google/resolve?name=example.com&type=NS",
+      "source_name": "https://dns.google/resolve?name=example.com&type=NS",
+      "adapter_id": "dns",
+      "collected_at": "2026-10-17T02:23:15+00:00",
+      "scope_id": "8d30f26f711c",
+      "status": "VERIFIED",
+      "verification_reason": "Nilai diamati langsung pada respons sumber; bukan validasi kepemilikan/identitas.",
+      "confidence_basis": "Observasi deterministik pada waktu pengambilan.",
+      "digest": "00349bfd6f5b490dd9528ce4edfb47d10ed9287bef58e4aeef3ffe934fe09763",
+      "error_code": null,
+      "raw": {
+        "TTL": 21600,
+        "data": "hera.ns.cloudflare.com.",
+        "name": "example.com.",
+        "type": 2
+      }
+    },
+    {
+      "id": "d18599c6c93a440e",
+      "case_id": "8d30f26f711c",
+      "entity_type": "dns",
+      "normalized_value": "example.com. 2 elliott.ns.cloudflare.com.",
+      "title": "DNS NS",
+      "source_url": "https://dns.google/resolve?name=example.com&type=NS",
+      "source_name": "https://dns.google/resolve?name=example.com&type=NS",
+      "adapter_id": "dns",
+      "collected_at": "2026-10-17T02:23:15+00:00",
+      "scope_id": "8d30f26f711c",
+      "status": "VERIFIED",
+      "verification_reason": "Nilai diamati langsung pada respons sumber; bukan validasi kepemilikan/identitas.",
+      "confidence_basis": "Observasi deterministik pada waktu pengambilan.",
+      "digest": "525eb98142d4449ac35e1b1718ab36aa011a6dec35ed3edeae486a9efcd32c7b",
+      "error_code": null,
+      "raw": {
+        "TTL": 21600,
+        "data": "elliott.ns.cloudflare.com.",
+        "name": "example.com.",
+        "type": 2
+      }
+    },
+    {
+      "id": "361c7161455044d0",
+      "case_id": "8d30f26f711c",
+      "entity_type": "certificate_name",
+      "normalized_value": "*.example.com",
+      "title": "certificate_name",
+      "source_url": "https://crt.sh/?q=%25.example.com&output=json",
+      "source_name": "https://crt.sh/?q=%25.example.com&output=json",
+      "adapter_id": "ct",
+      "collected_at": "2026-10-17T02:23:22+00:00",
+      "scope_id": "8d30f26f711c",
+      "status": "CANDIDATE",
+      "verification_reason": "Nama tercatat pada certificate transparency; mungkin historis, belum dibuktikan aktif.",
+      "confidence_basis": "Observasi deterministik pada waktu pengambilan.",
+      "digest": "cf9ce51cee4b899569f4b3d1d2b7f3870f65ea1b1df2d8361f6a9beb445c94df",
+      "error_code": null,
+      "raw": {
+        "id": 29581274041,
+        "issuer_name": "C=US, O=SSL Corporation, CN=Cloudflare TLS Issuing ECC CA 3",
+        "name_value": "*.example.com\nexample.com",
+        "not_after": "2026-12-25T22:56:35",
+        "not_before": "2026-09-26T22:49:11"
+      }
+    },
+    {
+      "id": "5c37ad7770ce4bb4",
+      "case_id": "8d30f26f711c",
+      "entity_type": "certificate_name",
+      "normalized_value": "support.example.com",
+      "title": "certificate_name",
+      "source_url": "https://crt.sh/?q=%25.example.com&output=json",
+      "source_name": "https://crt.sh/?q=%25.example.com&output=json",
+      "adapter_id": "ct",
+      "collected_at": "2026-10-17T02:23:22+00:00",
+      "scope_id": "8d30f26f711c",
+      "status": "CANDIDATE",
+      "verification_reason": "Nama tercatat pada certificate transparency; mungkin historis, belum dibuktikan aktif.",
+      "confidence_basis": "Observasi deterministik pada waktu pengambilan.",
+      "digest": "605af2ab8541a78a0bb58e42190a244b0978003b186ae0f12310387559bf6d81",
+      "error_code": null,
+      "raw": {
+        "id": 24558997,
+        "issuer_name": "C=US, O=Symantec Corporation, OU=Symantec Trust Network, CN=Symantec Class 3 Secure Server CA - G4",
+        "name_value": "dev.example.com\nexample.com\nproducts.example.com\nsupport.example.com\nwww.example.com",
+        "not_after": "2018-07-14T23:59:59",
+        "not_before": "2016-07-14T00:00:00"
+      }
+    },
+    {
+      "id": "7792ce2f3a204864",
+      "case_id": "8d30f26f711c",
+      "entity_type": "certificate_name",
+      "normalized_value": "www.example.com",
+      "title": "certificate_name",
+      "source_url": "https://crt.sh/?q=%25.example.com&output=json",
+      "source_name": "https://crt.sh/?q=%25.example.com&output=json",
+      "adapter_id": "ct",
+      "collected_at": "2026-10-17T02:23:22+00:00",
+      "scope_id": "8d30f26f711c",
+      "status": "CANDIDATE",
+      "verification_reason": "Nama tercatat pada certificate transparency; mungkin historis, belum dibuktikan aktif.",
+      "confidence_basis": "Observasi deterministik pada waktu pengambilan.",
+      "digest": "cc3cd957e6cdb8604dba1a94c66803744744b2ce0e4fc909294a0bc531eedc96",
+      "error_code": null,
+      "raw": {
+        "id": 22853391369,
+        "issuer_name": "C=GB, O=Sectigo Limited, CN=Sectigo Public Server Authentication CA OV R36",
+        "name_value": "example.com\nwww.example.com",
+        "not_after": "2026-12-02T23:59:59",
+        "not_before": "2025-12-02T00:00:00"
+      }
+    },
+    {
+      "id": "7dfa5ca100bf4204",
+      "case_id": "8d30f26f711c",
+      "entity_type": "certificate_name",
+      "normalized_value": "dev.example.com",
+      "title": "certificate_name",
+      "source_url": "https://crt.sh/?q=%25.example.com&output=json",
+      "source_name": "https://crt.sh/?q=%25.example.com&output=json",
+      "adapter_id": "ct",
+      "collected_at": "2026-10-17T02:23:22+00:00",
+      "scope_id": "8d30f26f711c",
+      "status": "CANDIDATE",
+      "verification_reason": "Nama tercatat pada certificate transparency; mungkin historis, belum dibuktikan aktif.",
+      "confidence_basis": "Observasi deterministik pada waktu pengambilan.",
+      "digest": "8109cd61e80cbdad2184c4beca3ac0b98a20a4540d3059d2d8d28330d981e9d2",
+      "error_code": null,
+      "raw": {
+        "id": 24558997,
+        "issuer_name": "C=US, O=Symantec Corporation, OU=Symantec Trust Network, CN=Symantec Class 3 Secure Server CA - G4",
+        "name_value": "dev.example.com\nexample.com\nproducts.example.com\nsupport.example.com\nwww.example.com",
+        "not_after": "2018-07-14T23:59:59",
+        "not_before": "2016-07-14T00:00:00"
+      }
+    },
+    {
+      "id": "7ffdd1bd884f4f15",
+      "case_id": "8d30f26f711c",
+      "entity_type": "certificate_name",
+      "normalized_value": "example.com",
+      "title": "certificate_name",
+      "source_url": "https://crt.sh/?q=%25.example.com&output=json",
+      "source_name": "https://crt.sh/?q=%25.example.com&output=json",
+      "adapter_id": "ct",
+      "collected_at": "2026-10-17T02:23:22+00:00",
+      "scope_id": "8d30f26f711c",
+      "status": "CANDIDATE",
+      "verification_reason": "Nama tercatat pada certificate transparency; mungkin historis, belum dibuktikan aktif.",
+      "confidence_basis": "Observasi deterministik pada waktu pengambilan.",
+      "digest": "8b2090359125bc9560685b73f00b220578960fae76b34d6b68e2194f85e2d7b0",
+      "error_code": null,
+      "raw": {
+        "id": 29581274041,
+        "issuer_name": "C=US, O=SSL Corporation, CN=Cloudflare TLS Issuing ECC CA 3",
+        "name_value": "*.example.com\nexample.com",
+        "not_after": "2026-12-25T22:56:35",
+        "not_before": "2026-09-26T22:49:11"
+      }
+    },
+    {
+      "id": "8f1d5cbcd5ec4087",
+      "case_id": "8d30f26f711c",
+      "entity_type": "certificate_name",
+      "normalized_value": "products.example.com",
+      "title": "certificate_name",
+      "source_url": "https://crt.sh/?q=%25.example.com&output=json",
+      "source_name": "https://crt.sh/?q=%25.example.com&output=json",
+      "adapter_id": "ct",
+      "collected_at": "2026-10-17T02:23:22+00:00",
+      "scope_id": "8d30f26f711c",
+      "status": "CANDIDATE",
+      "verification_reason": "Nama tercatat pada certificate transparency; mungkin historis, belum dibuktikan aktif.",
+      "confidence_basis": "Observasi deterministik pada waktu pengambilan.",
+      "digest": "b800d57b65bd2af4029e7adb29d7e10833d80e5a7cbd5a20e679102a9dad0ec2",
+      "error_code": null,
+      "raw": {
+        "id": 24558997,
+        "issuer_name": "C=US, O=Symantec Corporation, OU=Symantec Trust Network, CN=Symantec Class 3 Secure Server CA - G4",
+        "name_value": "dev.example.com\nexample.com\nproducts.example.com\nsupport.example.com\nwww.example.com",
+        "not_after": "2018-07-14T23:59:59",
+        "not_before": "2016-07-14T00:00:00"
+      }
+    },
+    {
+      "id": "ddce8598cb78439f",
+      "case_id": "8d30f26f711c",
+      "entity_type": "certificate_name",
+      "normalized_value": "m.example.com",
+      "title": "certificate_name",
+      "source_url": "https://crt.sh/?q=%25.example.com&output=json",
+      "source_name": "https://crt.sh/?q=%25.example.com&output=json",
+      "adapter_id": "ct",
+      "collected_at": "2026-10-17T02:23:22+00:00",
+      "scope_id": "8d30f26f711c",
+      "status": "CANDIDATE",
+      "verification_reason": "Nama tercatat pada certificate transparency; mungkin historis, belum dibuktikan aktif.",
+      "confidence_basis": "Observasi deterministik pada waktu pengambilan.",
+      "digest": "2aa9f5cca122a5d065d8df400fcadb198b069ef424109e81501fc77bfb00a7aa",
+      "error_code": null,
+      "raw": {
+        "id": 24560621,
+        "issuer_name": "C=US, O=\"thawte, Inc.\", CN=thawte SSL CA - G2",
+        "name_value": "*.example.com\nexample.com\nm.example.com\nwww.example.com",
+        "not_after": "2017-07-14T23:59:59",
+        "not_before": "2016-07-14T00:00:00"
+      }
+    },
+    {
+      "id": "397af6bd039744ae",
+      "case_id": "8d30f26f711c",
+      "entity_type": "dns",
+      "normalized_value": "example.com. 16 _k2n1y4vw3qtb4skdx9e7dxt97qrmmq9",
+      "title": "DNS TXT",
+      "source_url": "https://dns.google/resolve?name=example.com&type=TXT",
+      "source_name": "https://dns.google/resolve?name=example.com&type=TXT",
+      "adapter_id": "dns",
+      "collected_at": "2026-10-17T02:23:23+00:00",
+      "scope_id": "8d30f26f711c",
+      "status": "VERIFIED",
+      "verification_reason": "Nilai diamati langsung pada respons sumber; bukan validasi kepemilikan/identitas.",
+      "confidence_basis": "Observasi deterministik pada waktu pengambilan.",
+      "digest": "d88fd1de4000e11a75dee8efc98d72e7af64b182951238190c0bdbc93784dcdf",
+      "error_code": null,
+      "raw": {
+        "TTL": 300,
+        "data": "_k2n1y4vw3qtb4skdx9e7dxt97qrmmq9",
+        "name": "example.com.",
+        "type": 16
+      }
+    },
+    {
+      "id": "d2b9a5b3980b4e52",
+      "case_id": "8d30f26f711c",
+      "entity_type": "dns",
+      "normalized_value": "example.com. 16 v=spf1 -all",
+      "title": "DNS TXT",
+      "source_url": "https://dns.google/resolve?name=example.com&type=TXT",
+      "source_name": "https://dns.google/resolve?name=example.com&type=TXT",
+      "adapter_id": "dns",
+      "collected_at": "2026-10-17T02:23:23+00:00",
+      "scope_id": "8d30f26f711c",
+      "status": "VERIFIED",
+      "verification_reason": "Nilai diamati langsung pada respons sumber; bukan validasi kepemilikan/identitas.",
+      "confidence_basis": "Observasi deterministik pada waktu pengambilan.",
+      "digest": "d75ded3c5b7e13bc09cbd6a2942262d2dde100c3d90e221fe3856b5119cc1aa7",
+      "error_code": null,
+      "raw": {
+        "TTL": 300,
+        "data": "v=spf1 -all",
+        "name": "example.com.",
+        "type": 16
+      }
+    }
+  ],
+  "narrative": null,
+  "summary_only": false
+}
